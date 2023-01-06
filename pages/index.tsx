@@ -95,9 +95,7 @@ const Signature = ({ signature }) => {
                 <span>{signature.phone_label} <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
               </>
               )}<br />
-              <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
-              {!signature.phone && (<br />)}
-              <br /><br /><br /><br />
+              <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a><br /><br /><br />
               <div style={{marginBottom: '5px'}} className="insta-link">
                 <img style={{marginBottom: '-2px'}} alt="Instagram" height="8" src="https://github.com/beelaineo/pb-signatures/blob/main/assets/insta.png?raw=true" />
                 <a style={{color: '#000', textDecoration: 'unset', paddingLeft: 2, fontWeight: 300}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
