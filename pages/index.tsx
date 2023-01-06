@@ -13,8 +13,22 @@ const Signature = ({ signature }) => {
     return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
     <html><head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="x-apple-disable-message-reformatting">
+    <title></title>
+    <style type="text/css">
+      table td {
+        vertical-align: top;
+      }
+      @media only screen and (max-width:540px)  {
+        .desktop-view{display: none !important;}
+      }
+      @media only screen and (min-width:541px) {
+        .mobile-view{display: none !important;}
+      }
+    </style>
     </head>
-    <body>${html}</body></html>`
+    <body style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">${html}</body></html>`
   }
 
   const updateText = () => {
@@ -25,123 +39,120 @@ const Signature = ({ signature }) => {
 
   return (
   <>
+  <style jsx>{`
+    .mobile-view {
+      display: none;
+    }
+    @media screen and (max-width:540px)  {
+      .mobile-view {
+        display: block!important;
+      }
+      .desktop-view {
+        display: none!important;
+      }
+    }
+  `}</style>
   <div ref={signatureHTML} style={{ margin: 30, padding: 20, border: '1px solid #e1e1e1', fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
-    <style jsx>{`
-        table {
-          cell-spacing: 0;
-          cell-padding: 0;
-        }
-        table td {
-          vertical-align: top;
-        }
-        #mobile {
-          display: none;
-        }
-        @media screen and (max-width: 540px) {
-          #mobile {
-            display: block;
-          }
-          #desktop {
-            display: none;
-          }
-        }
-      `}</style>
-    <table id="desktop" cellPadding={0} cellSpacing={0}>
+    <div className='desktop-view'>
+    <table cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
-          <td>
-            <span style={{fontWeight: 600, fontSize: '9px', lineHeight: '9px'}}>{signature.name}</span><br /><br />
-            <div className='meta' style={{fontWeight: 400, fontSize: '8px', lineHeight: '11px'}}>
+          <td style={{verticalAlign: 'top'}}>
+            <span style={{fontWeight: 600, fontSize: '10px', lineHeight: '10px'}}>{signature.name}</span><br /><br />
+            <div className='meta' style={{fontWeight: 400, fontSize: '8.5px', lineHeight: '11.5px'}}>
               <span>{signature.role}</span>
               {signature.phone && (
               <>
                 <br />
-                <span>{signature.phone_label} <a style={{color: 'inherit', textDecoration: 'unset'}} href={`tel:${signature.phone.replace(" ", "")}`}>{signature.phone}</a></span>
+                <span>{signature.phone_label} <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
               </>
               )}
               <br />
-              <a style={{color: 'inherit', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
+              <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
             </div>
           </td>
-          <td>
-            <div style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px', borderLeft: '0.5px solid #000', marginLeft: 16, paddingLeft: 16}}>
-              <span style={{fontWeight: 600}}>Photobomb Production NYC</span><br />
-              360 W 34 St Suite 8R<br />
-              New York, NY 10001<br />
-              Office: +1 646 477 5559<br /><br /><br /><br />
+          <td style={{verticalAlign: 'top'}}>
+            <div style={{fontWeight: 300, fontSize: '7.5px', lineHeight: '10px', borderLeft: '0.5px solid #000', marginLeft: 16, paddingLeft: 16}}>
+              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb Production NYC</span><br />
+              <span>360</span> <span>W</span> <span>34</span> <span>St</span> <span>Suite 8R</span><br />
+              <span>New</span> <span>York,</span> <span>NY</span> <span>10001</span><br />
+              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+16464775559`}>+1 646 477 5559</a><br /><br /><br />
               <div style={{marginBottom: '5px'}} className="insta-link">
-                <img style={{marginBottom: '-2px'}} alt="Instagram" height="8" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI2LjMuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1OS42IDU5LjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU5LjYgNTkuNjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDEyMTI0MDE2NTQ1NjMyNTk2NTU4MDAwMDAxMDc0MzU1ODE1Mjg3NDc3NTY4NF8pO30KPC9zdHlsZT4KPGc+Cgk8ZGVmcz4KCQk8cmVjdCBpZD0iU1ZHSURfMV8iIHk9IjAiIHdpZHRoPSI1OS42IiBoZWlnaHQ9IjU5LjYiLz4KCTwvZGVmcz4KCTxjbGlwUGF0aCBpZD0iU1ZHSURfMDAwMDAxNTY1NDkzMDA4NDAyNjc1MzM0MzAwMDAwMTA1OTkzNzA4MzcxNjE1NzU4MzJfIj4KCQk8dXNlIHhsaW5rOmhyZWY9IiNTVkdJRF8xXyIgIHN0eWxlPSJvdmVyZmxvdzp2aXNpYmxlOyIvPgoJPC9jbGlwUGF0aD4KCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDE1NjU0OTMwMDg0MDI2NzUzMzQzMDAwMDAxMDU5OTM3MDgzNzE2MTU3NTgzMl8pOyIgZD0iTTI5LjgsNTQuMgoJCUMyOS44LDU0LjMsMjkuOCw1NC4zLDI5LjgsNTQuMmMzLjgsMCw3LjUtMC4xLDExLjMtMC4xYzEuNywwLDMuNC0wLjIsNS4xLTAuN2MxLjgtMC41LDMuNC0xLjQsNC43LTIuN2MxLjctMS43LDIuNS0zLjgsMi45LTYuMQoJCWMwLjMtMiwwLjQtNC4xLDAuNC02LjJjMC0zLjUsMC03LDAtMTAuNGMwLTMtMC4xLTYuMS0wLjEtOS4xYzAtMS43LTAuMi0zLjUtMC42LTUuMmMtMC43LTMtMi40LTUuMy01LjEtNi43CgkJYy0xLjctMC45LTMuNS0xLjMtNS40LTEuNGMtMi4yLTAuMS00LjUtMC4yLTYuNy0wLjJjLTUuNiwwLTExLjMsMC4xLTE2LjksMC4xYy0xLjgsMC0zLjYsMC4xLTUuNCwwLjVjLTIuNywwLjYtNC45LDItNi41LDQuMwoJCWMtMS4yLDEuOC0xLjcsMy44LTEuOSw1LjljLTAuMiwyLjEtMC4yLDQuMi0wLjMsNi4zYzAsMy43LDAsNy40LDAsMTEuMmMwLDIuNiwwLjEsNS4yLDAuMSw3LjdjMCwxLjUsMC4yLDIuOSwwLjUsNC4zCgkJYzAuNiwyLjcsMiw0LjgsNC4zLDYuNGMxLjgsMS4yLDMuOCwxLjcsNS44LDEuOWMyLjEsMC4yLDQuMiwwLjIsNi4zLDAuM0MyNC45LDU0LjMsMjcuNCw1NC4yLDI5LjgsNTQuMiBNNTkuNiwyMi45djE0LjYKCQljMCwwLjEsMCwwLjIsMCwwLjNjLTAuMSwxLjUtMC4xLDMuMS0wLjIsNC42Yy0wLjEsMS45LTAuNCwzLjctMC45LDUuNWMtMC45LDMuMi0yLjcsNS45LTUuMyw4Yy0yLjUsMi01LjUsMy04LjcsMy40CgkJYy0yLjEsMC4yLTQuMiwwLjMtNi4yLDAuNGMtMC4yLDAtMC40LDAtMC41LDAuMUgyMi41Yy0wLjEsMC0wLjItMC4xLTAuMy0wLjFjLTEsMC0yLDAtMi45LTAuMWMtMi4zLTAuMS00LjYtMC4yLTYuOS0wLjgKCQljLTMuNi0wLjktNi42LTIuOS04LjktNS45Yy0xLjktMi42LTIuOC01LjYtMy4xLTguN2MtMC4yLTEuOS0wLjItMy44LTAuMy01LjhjMC0wLjIsMC0wLjMsMC0wLjVWMjEuNmMwLTAuMSwwLTAuMiwwLTAuMwoJCWMwLjEtMS40LDAuMS0yLjgsMC4yLTQuMWMwLjEtMS44LDAuMy0zLjYsMC45LTUuNGMxLjEtNCwzLjUtNyw3LTkuMWMyLjUtMS41LDUuMy0yLjIsOC4yLTIuNGMxLjctMC4xLDMuNS0wLjEsNS4yLTAuMgoJCWMwLjEsMCwwLjIsMCwwLjQtMC4xaDE1LjRjMC4xLDAsMC4zLDAuMSwwLjQsMC4xYzEuMSwwLDIuMiwwLjEsMy4zLDAuMWMyLjYsMC4xLDUuMywwLjMsNy44LDEuMmMzLjQsMS4yLDYuMSwzLjMsOCw2LjMKCQljMS43LDIuNiwyLjQsNS42LDIuNiw4LjdjMC4xLDIsMC4yLDQuMSwwLjIsNi4xQzU5LjYsMjIuNiw1OS42LDIyLjcsNTkuNiwyMi45Ii8+Cgk8cGF0aCBzdHlsZT0iY2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAxNTY1NDkzMDA4NDAyNjc1MzM0MzAwMDAwMTA1OTkzNzA4MzcxNjE1NzU4MzJfKTsiIGQ9Ik0yOS44LDE5LjljLTUuNiwwLTkuOCw0LjUtMTAsOS41CgkJYy0wLjIsNS44LDQuNCwxMC4zLDkuOSwxMC4zYzUuNCwwLDkuOS00LjQsOS45LTkuOEMzOS43LDI0LjEsMzUuMiwxOS45LDI5LjgsMTkuOSBNNDUuMSwyOS42YzAuMSw4LjQtNi41LDE1LjItMTQuNywxNS41CgkJYy04LjUsMC4zLTE1LjUtNi40LTE1LjktMTQuN2MtMC4zLTguNSw2LjQtMTUuNywxNC44LTE1LjlDMzcuOSwxNC4zLDQ0LjksMjAuOSw0NS4xLDI5LjYiLz4KCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDE1NjU0OTMwMDg0MDI2NzUzMzQzMDAwMDAxMDU5OTM3MDgzNzE2MTU3NTgzMl8pOyIgZD0iTTQyLjEsMTMuOWMwLTIsMS42LTMuNiwzLjYtMy42CgkJYzIsMCwzLjYsMS42LDMuNSwzLjZjMCwxLjktMS42LDMuNS0zLjYsMy41QzQzLjcsMTcuNSw0Mi4xLDE1LjksNDIuMSwxMy45Ii8+CjwvZz4KPC9zdmc+Cg==" />
-                <a style={{color: 'inherit', textDecoration: 'unset', paddingLeft: 2}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
+                <img style={{marginBottom: '-2px'}} alt="Instagram" height="8" src="https://github.com/beelaineo/pb-signatures/blob/main/assets/insta.png?raw=true" />
+                <a style={{color: '#000', textDecoration: 'unset', paddingLeft: 2}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
               </div>
             </div>
           </td>
-          <td>
-            <div style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px', paddingLeft: 16}}>
-              <span style={{fontWeight: 600}}>Photobomb Production LA</span><br />
-              12030 Viewcrest Road<br />
-              Studio City, CA 91604<br />
-              Office: +1 323 540 5700<br /><br /><br />
+          <td style={{verticalAlign: 'top'}}>
+            <div style={{fontWeight: 300, fontSize: '7.5px', lineHeight: '10px', paddingLeft: 16}}>
+              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb Production LA</span><br />
+              <span>12030</span> <span>Viewcrest</span> <span>Road</span><br />
+              <span>Studio</span> <span>City,</span> <span>CA</span> <span>91604</span><br />
+              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+13235405700`}>+1 323 540 5700</a><br /><br />
               <span style={{fontWeight: 600}}>Invoicing</span><br />
-              <a style={{color: 'inherit', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com" target="_blank">invoices@photobombproduction.com</a>
+              <a style={{color: '#000', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com" target="_blank">invoices@photobombproduction.com</a>
             </div>
           </td>
-          <td>
-            <div style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px', paddingLeft: 0}}>
-              <span style={{fontWeight: 600}}>Photobomb Production LDN</span><br />
-              15 Poland St<br />
-              London, WIF 8QE<br />
-              Office: +44 20 7993 6051
+          <td style={{verticalAlign: 'top'}}>
+            <div style={{fontWeight: 300, fontSize: '7.5px', lineHeight: '10px', paddingLeft: 0}}>
+              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb Production LDN</span><br />
+              <span>15</span> <span>Poland</span> <span>St</span><br />
+              <span>London,</span> <span>WIF 8QE</span><br />
+              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+442079936051`}>+44 20 7993 6051</a>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
-    <table id="mobile" cellPadding={0} cellSpacing={0}>
+    </div>
+    <div className='mobile-view'>
+    <table cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
-          <td style={{paddingRight: 16}}>
+          <td style={{paddingRight: 16, verticalAlign: 'top'}}>
             <span style={{fontWeight: 600, fontSize: '9px', lineHeight: '9px'}}>{signature.name}</span><br /><br />
             <div className='meta' style={{fontWeight: 400, fontSize: '8px', lineHeight: '11px'}}>
               <span>{signature.role}</span>
               {signature.phone && (
               <>
                 <br />
-                <span>{signature.phone_label} <a style={{color: 'inherit', textDecoration: 'unset'}} href={`tel:${signature.phone.replace(" ", "")}`}>{signature.phone}</a></span>
+                <span>{signature.phone_label} <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
               </>
               )}<br />
-              <a style={{color: 'inherit', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
+              <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
               <br /><br /><br />
               <div style={{marginBottom: '5px'}} className="insta-link">
-                <img style={{marginBottom: '-2px'}} alt="Instagram" height="8" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI2LjMuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA1OS42IDU5LjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU5LjYgNTkuNjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDEyMTI0MDE2NTQ1NjMyNTk2NTU4MDAwMDAxMDc0MzU1ODE1Mjg3NDc3NTY4NF8pO30KPC9zdHlsZT4KPGc+Cgk8ZGVmcz4KCQk8cmVjdCBpZD0iU1ZHSURfMV8iIHk9IjAiIHdpZHRoPSI1OS42IiBoZWlnaHQ9IjU5LjYiLz4KCTwvZGVmcz4KCTxjbGlwUGF0aCBpZD0iU1ZHSURfMDAwMDAxNTY1NDkzMDA4NDAyNjc1MzM0MzAwMDAwMTA1OTkzNzA4MzcxNjE1NzU4MzJfIj4KCQk8dXNlIHhsaW5rOmhyZWY9IiNTVkdJRF8xXyIgIHN0eWxlPSJvdmVyZmxvdzp2aXNpYmxlOyIvPgoJPC9jbGlwUGF0aD4KCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDE1NjU0OTMwMDg0MDI2NzUzMzQzMDAwMDAxMDU5OTM3MDgzNzE2MTU3NTgzMl8pOyIgZD0iTTI5LjgsNTQuMgoJCUMyOS44LDU0LjMsMjkuOCw1NC4zLDI5LjgsNTQuMmMzLjgsMCw3LjUtMC4xLDExLjMtMC4xYzEuNywwLDMuNC0wLjIsNS4xLTAuN2MxLjgtMC41LDMuNC0xLjQsNC43LTIuN2MxLjctMS43LDIuNS0zLjgsMi45LTYuMQoJCWMwLjMtMiwwLjQtNC4xLDAuNC02LjJjMC0zLjUsMC03LDAtMTAuNGMwLTMtMC4xLTYuMS0wLjEtOS4xYzAtMS43LTAuMi0zLjUtMC42LTUuMmMtMC43LTMtMi40LTUuMy01LjEtNi43CgkJYy0xLjctMC45LTMuNS0xLjMtNS40LTEuNGMtMi4yLTAuMS00LjUtMC4yLTYuNy0wLjJjLTUuNiwwLTExLjMsMC4xLTE2LjksMC4xYy0xLjgsMC0zLjYsMC4xLTUuNCwwLjVjLTIuNywwLjYtNC45LDItNi41LDQuMwoJCWMtMS4yLDEuOC0xLjcsMy44LTEuOSw1LjljLTAuMiwyLjEtMC4yLDQuMi0wLjMsNi4zYzAsMy43LDAsNy40LDAsMTEuMmMwLDIuNiwwLjEsNS4yLDAuMSw3LjdjMCwxLjUsMC4yLDIuOSwwLjUsNC4zCgkJYzAuNiwyLjcsMiw0LjgsNC4zLDYuNGMxLjgsMS4yLDMuOCwxLjcsNS44LDEuOWMyLjEsMC4yLDQuMiwwLjIsNi4zLDAuM0MyNC45LDU0LjMsMjcuNCw1NC4yLDI5LjgsNTQuMiBNNTkuNiwyMi45djE0LjYKCQljMCwwLjEsMCwwLjIsMCwwLjNjLTAuMSwxLjUtMC4xLDMuMS0wLjIsNC42Yy0wLjEsMS45LTAuNCwzLjctMC45LDUuNWMtMC45LDMuMi0yLjcsNS45LTUuMyw4Yy0yLjUsMi01LjUsMy04LjcsMy40CgkJYy0yLjEsMC4yLTQuMiwwLjMtNi4yLDAuNGMtMC4yLDAtMC40LDAtMC41LDAuMUgyMi41Yy0wLjEsMC0wLjItMC4xLTAuMy0wLjFjLTEsMC0yLDAtMi45LTAuMWMtMi4zLTAuMS00LjYtMC4yLTYuOS0wLjgKCQljLTMuNi0wLjktNi42LTIuOS04LjktNS45Yy0xLjktMi42LTIuOC01LjYtMy4xLTguN2MtMC4yLTEuOS0wLjItMy44LTAuMy01LjhjMC0wLjIsMC0wLjMsMC0wLjVWMjEuNmMwLTAuMSwwLTAuMiwwLTAuMwoJCWMwLjEtMS40LDAuMS0yLjgsMC4yLTQuMWMwLjEtMS44LDAuMy0zLjYsMC45LTUuNGMxLjEtNCwzLjUtNyw3LTkuMWMyLjUtMS41LDUuMy0yLjIsOC4yLTIuNGMxLjctMC4xLDMuNS0wLjEsNS4yLTAuMgoJCWMwLjEsMCwwLjIsMCwwLjQtMC4xaDE1LjRjMC4xLDAsMC4zLDAuMSwwLjQsMC4xYzEuMSwwLDIuMiwwLjEsMy4zLDAuMWMyLjYsMC4xLDUuMywwLjMsNy44LDEuMmMzLjQsMS4yLDYuMSwzLjMsOCw2LjMKCQljMS43LDIuNiwyLjQsNS42LDIuNiw4LjdjMC4xLDIsMC4yLDQuMSwwLjIsNi4xQzU5LjYsMjIuNiw1OS42LDIyLjcsNTkuNiwyMi45Ii8+Cgk8cGF0aCBzdHlsZT0iY2xpcC1wYXRoOnVybCgjU1ZHSURfMDAwMDAxNTY1NDkzMDA4NDAyNjc1MzM0MzAwMDAwMTA1OTkzNzA4MzcxNjE1NzU4MzJfKTsiIGQ9Ik0yOS44LDE5LjljLTUuNiwwLTkuOCw0LjUtMTAsOS41CgkJYy0wLjIsNS44LDQuNCwxMC4zLDkuOSwxMC4zYzUuNCwwLDkuOS00LjQsOS45LTkuOEMzOS43LDI0LjEsMzUuMiwxOS45LDI5LjgsMTkuOSBNNDUuMSwyOS42YzAuMSw4LjQtNi41LDE1LjItMTQuNywxNS41CgkJYy04LjUsMC4zLTE1LjUtNi40LTE1LjktMTQuN2MtMC4zLTguNSw2LjQtMTUuNywxNC44LTE1LjlDMzcuOSwxNC4zLDQ0LjksMjAuOSw0NS4xLDI5LjYiLz4KCTxwYXRoIHN0eWxlPSJjbGlwLXBhdGg6dXJsKCNTVkdJRF8wMDAwMDE1NjU0OTMwMDg0MDI2NzUzMzQzMDAwMDAxMDU5OTM3MDgzNzE2MTU3NTgzMl8pOyIgZD0iTTQyLjEsMTMuOWMwLTIsMS42LTMuNiwzLjYtMy42CgkJYzIsMCwzLjYsMS42LDMuNSwzLjZjMCwxLjktMS42LDMuNS0zLjYsMy41QzQzLjcsMTcuNSw0Mi4xLDE1LjksNDIuMSwxMy45Ii8+CjwvZz4KPC9zdmc+Cg==" />
-                <a style={{color: 'inherit', textDecoration: 'unset', paddingLeft: 2}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
+                <img style={{marginBottom: '-2px'}} alt="Instagram" height="8" src="https://github.com/beelaineo/pb-signatures/blob/main/assets/insta.png?raw=true" />
+                <a style={{color: '#000', textDecoration: 'unset', paddingLeft: 2, fontWeight: 300}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
               </div>
               <span style={{fontWeight: 600}}>Invoicing</span><br />
-              <a style={{color: 'inherit', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com" target="_blank">invoices@photobombproduction.com</a>
+              <a style={{color: '#000', textDecoration: 'unset', fontWeight: 300}} href="mailto:invoices@photobombproduction.com" target="_blank">invoices@photobombproduction.com</a>
             </div>
           </td>
-          <td style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px', borderLeft: '0.5px solid #000', paddingLeft: 16}}>
-            <div>
+          <td style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px', borderLeft: '0.5px solid #000', paddingTop: 4, paddingLeft: 16, verticalAlign: 'top'}}>
+            <div style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px'}}>
               <span style={{fontWeight: 600}}>Photobomb Production NYC</span><br />
-              360 W 34 St Suite 8R<br />
-              New York, NY 10001<br />
-              Office: +1 646 477 5559<br /><br />
+              <span>360</span> <span>W</span> <span>34</span> <span>St</span> <span>Suite 8R</span><br />
+              <span>New</span> <span>York,</span> <span>NY</span> <span>10001</span><br />
+              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+16464775559`}>+1 646 477 5559</a><br /><br />
             </div>
             <div style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px'}}>
-              <span style={{fontWeight: 600}}>Photobomb Production LA</span><br />
-              12030 Viewcrest Road<br />
-              Studio City, CA 91604<br />
-              Office: +1 323 540 5700<br /><br />
+              <span style={{fontWeight: 600}}><span>Photobomb</span> <span>Production</span> <span>L</span><span>A</span></span><br />
+              <span>12030</span> <span>Viewcrest</span> Road<br />
+              <span>Studio</span> <span>City,</span> <span>CA</span> <span>91604</span><br />
+              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+13235405700`}>+1 323 540 5700</a><br /><br />
             </div>
             <div style={{fontWeight: 300, fontSize: '6.5px', lineHeight: '9px'}}>
               <span style={{fontWeight: 600}}>Photobomb Production LDN</span><br />
-              15 Poland St<br />
-              London, WIF 8QE<br />
-              Office: +44 20 7993 6051
+              <span>15</span> <span>Poland</span> St<br />
+              <span>London,</span> <span>WIF</span> <span>8QE</span><br />
+              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+442079936051`}>+44 20 7993 6051</a><br /><br />
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+    </div>
   </div>
   <CopyToClipboard
     text={clipboardText}
