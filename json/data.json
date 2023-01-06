@@ -1,0 +1,76 @@
+{
+  "entries": [
+    {
+      "id": 0,
+      "name": "Johnny Pascucci",
+      "role": "Owner / Executive Producer",
+      "phone_label": "Cell:",
+      "phone": "+1 305 812 2122",
+      "insta": "johnny_pascucci",
+      "insta_link": "https://www.instagram.com/johnny_pascucci/"
+    },
+    {
+      "id": 1,
+      "name": "Jason Agron",
+      "role": "Senior Creative Producer",
+      "phone_label": "Cell:",
+      "phone": "+1 650 642 5303"
+    },
+    {
+      "id": 2,
+      "name": "Kevin Warner",
+      "role": "Senior Creative Producer",
+      "phone_label": "Cell:",
+      "phone": "+1 917 275 3091"
+    },
+    {
+      "id": 3,
+      "name": "Sara Bielecki",
+      "role": "Senior Creative Producer",
+      "phone_label": "Cell:",
+      "phone": "+1 716 812 9687"
+    },
+    {
+      "id": 4,
+      "name": "Ulices Landaverde",
+      "role": "Director of Finance",
+      "phone_label": "Cell:",
+      "phone": "+1 213 628 5940"
+    },
+    {
+      "id": 5,
+      "name": "David Newman",
+      "role": "Production Coordinator",
+      "phone_label": "Cell:",
+      "phone": "+1 703 677 2989"
+    },
+    {
+      "id": 6,
+      "name": "Vicente Luna",
+      "role": "Production Coordinator",
+      "phone_label": "Cell:",
+      "phone": "+1 310 272 4184"
+    },
+    {
+      "id": 7,
+      "name": "Merry Nestor",
+      "role": "Production Coordinator",
+      "phone_label": "Cell:",
+      "phone": "+1 781 439 3433"
+    },
+    {
+      "id": 8,
+      "name": "Omar Quiroga",
+      "role": "Key Producer",
+      "phone_label": "Cell:",
+      "phone": "+1 626 226 6902"
+    },
+    {
+      "id": 9,
+      "name": "Nick Lambrakis",
+      "role": "Production Coordinator",
+      "phone_label": "Cell:",
+      "phone": "+1 630 484 6125"
+    }
+  ]
+}
