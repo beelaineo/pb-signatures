@@ -1,9 +1,31 @@
+import * as React from 'react'
 //useSWR allows the use of SWR inside function components
 import useSWR from 'swr'
+import CopyToClipboard from 'react-copy-html-to-clipboard'
+const { useRef, useState } = React
 
+const Signature = ({ signature }) => {
+  const [clipboardText, setClipboardText] = useState('')
+  const [copied, setCopied] = useState(false)
+  const signatureHTML = useRef<HTMLDivElement>(null)
 
-const Signature = ({ signature }) => (
-  <div style={{ margin: 30, padding: 20, border: '1px solid #e1e1e1', fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
+  const renderEmailSignature = (html) => {
+    return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+    <html><head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    </head>
+    <body>${html}</body></html>`
+  }
+
+  const updateText = () => {
+    console.log(renderEmailSignature(signatureHTML.current?.outerHTML))
+    setClipboardText(renderEmailSignature(signatureHTML.current?.outerHTML))
+    setCopied(true)
+  }
+
+  return (
+  <>
+  <div ref={signatureHTML} style={{ margin: 30, padding: 20, border: '1px solid #e1e1e1', fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
     <style jsx>{`
         table {
           cell-spacing: 0;
@@ -121,8 +143,23 @@ const Signature = ({ signature }) => (
       </tbody>
     </table>
   </div>
-)
-
+  <CopyToClipboard
+    text={clipboardText}
+    options={{ asHtml: true }}
+    onCopy={(text, result) => {
+      console.log(`on copied: ${result}`, text)
+    }}
+  >
+    <button
+      style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '0 auto', maxWidth: '320px' }}
+      onMouseDown={updateText}
+    >
+      {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
+    </button>
+  </CopyToClipboard>
+  </>
+  )
+}
 
 //Write a fetcher function to wrap the native fetch function and return the result of a call to url in json format
 const fetcher = (url) => fetch(url).then((res) => res.json())
