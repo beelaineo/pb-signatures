@@ -15,9 +15,22 @@ const Signature = ({ signature }) => {
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="x-apple-disable-message-reformatting">
+    <style>
+      #body .desktop-view {
+        display: none;
+      }
+      @media screen and (min-width: 600px) {
+        #body .desktop-view {
+          display: block;
+        }
+        #body .mobile-view {
+          display: none;
+        }
+      }
+    </style>
     <title></title>
     </head>
-    <body style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">${html}</body></html>`
+    <body id="body" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">${html}</body></html>`
   }
 
   const updateText = () => {
@@ -28,13 +41,26 @@ const Signature = ({ signature }) => {
 
   return (
   <>
+  <style jsx global>{`
+    .desktop-view {
+      display: none;
+    }
+    @media screen and (min-width: 600px) {
+      .desktop-view {
+        display: block;
+      }
+      .mobile-view {
+        display: none;
+      }
+    }
+  `}</style>
   <div ref={signatureHTML} style={{ margin: 30, padding: 20, border: '1px solid #e1e1e1', fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
-    {/* <div className='desktop-view'>
+    <div className='desktop-view'>
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
           <td style={{verticalAlign: 'top'}}>
-            <span style={{fontWeight: 600, fontSize: '10px', lineHeight: '10px'}}>{signature.name}</span><br /><br />
+            <span style={{fontWeight: 600, fontSize: '11.5px', lineHeight: '10px'}}>{signature.name}</span><br /><br />
             <div className='meta' style={{fontWeight: 400, fontSize: '8.5px', lineHeight: '11.5px'}}>
               <span>{signature.role}</span>
               {signature.phone && (
@@ -80,14 +106,14 @@ const Signature = ({ signature }) => {
         </tr>
       </tbody>
     </table>
-    </div> */}
+    </div>
     <div className='mobile-view'>
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
           <td style={{paddingRight: 16, verticalAlign: 'top'}}>
-            <span style={{fontWeight: 600, fontSize: '10px', lineHeight: '10px'}}>{signature.name}</span><br /><br />
-            <div className='meta' style={{fontWeight: 400, fontSize: '8.5px', lineHeight: '12px'}}>
+            <span style={{fontWeight: 600, fontSize: '11.5px', lineHeight: '11px'}}>{signature.name}</span><br />
+            <div className='meta' style={{paddingTop: '12px', fontWeight: 400, fontSize: '8.5px', lineHeight: '12px'}}>
               <span>{signature.role}</span>
               {signature.phone && (
               <>
@@ -95,7 +121,7 @@ const Signature = ({ signature }) => {
                 <span>{signature.phone_label} <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
               </>
               )}<br />
-              <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a><br /><br /><br />
+              <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a><br /><br /><br /><br />
               <div style={{marginBottom: '5px'}} className="insta-link">
                 <img style={{marginBottom: '-2px'}} alt="Instagram" height="8" src="https://github.com/beelaineo/pb-signatures/blob/main/assets/insta.png?raw=true" />
                 <a style={{color: '#000', textDecoration: 'unset', paddingLeft: 2, fontWeight: 300}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
