@@ -71,6 +71,13 @@
       "role": "Production Coordinator",
       "phone_label": "Cell:",
       "phone": "+1 630 484 6125"
+    },
+    {
+      "id": 10,
+      "name": "Lawrence Casseus",
+      "role": "Digital Manager",
+      "phone_label": "Cell:",
+      "phone": "+1 917 586 0762"
     }
   ]
 }
