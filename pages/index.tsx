@@ -4,6 +4,10 @@ import useSWR from 'swr'
 import CopyToClipboard from 'react-copy-html-to-clipboard'
 const { useRef, useState } = React
 
+const instagramIcon = (
+  <img height="6px" width="6px" style={{lineHeight: 0, marginBottom: -1}} src="https://pb-signatures.vercel.app/insta.png" />
+)
+
 const Signature = ({ signature }) => {
   const [clipboardText, setClipboardText] = useState('')
   const [copied, setCopied] = useState(false)
@@ -29,11 +33,10 @@ const Signature = ({ signature }) => {
   return (
   <>
   <div ref={signatureHTML} style={{ padding: 0, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
-    <div className='desktop-view'>
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
-          <td style={{verticalAlign: 'top', fontSize: '7px', lineHeight: '7px', paddingTop: '8px'}}>
+          <td style={{verticalAlign: 'top', fontSize: '7px', lineHeight: '8px', paddingTop: 0}}>
             <span style={{fontWeight: 600, fontSize: '8px', lineHeight: '7px'}}>{signature.name}</span><br /><br /><br /><br />
             <div className='meta' style={{fontWeight: 400, fontSize: '7px', lineHeight: '8px'}}>
               <span>{signature.role}</span>
@@ -46,7 +49,7 @@ const Signature = ({ signature }) => {
               {signature.insta && signature.insta_link && (
                 <>
                   <br />
-                  <span><a style={{color: '#000', textDecoration: 'unset'}} href={signature.insta_link} target="_blank"><img style={{marginBottom: '-2px'}} alt="Instagram" height="6" src="https://github.com/beelaineo/pb-signatures/blob/main/assets/insta.png?raw=true" /> {signature.insta}</a></span>
+                  <span><a style={{color: '#000', textDecoration: 'unset'}} href={signature.insta_link} target="_blank">{instagramIcon} {signature.insta}</a></span>
                 </>
               )}
               <br />
@@ -54,21 +57,21 @@ const Signature = ({ signature }) => {
             </div>
           </td>
           <td style={{verticalAlign: 'top'}}>
-            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '0.5px solid #000', marginLeft: 10, paddingLeft: 10, paddingTop: 4}}>
-              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb Production NYC</span><br />
+            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '0.5px solid #000', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
+              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb NYC</span><br />
               <span>360</span> <span>W</span> <span>34</span> <span>St</span> <span>Suite 8R</span><br />
               <span>New</span> <span>York,</span> <span>NY</span> <span>10001</span><br />
               Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+16464775559`}>+1 646 477 5559</a><br /><br /><br />
               {signature.insta && signature.insta_link && (<br />)}
               <div style={{marginBottom: '5px'}} className="insta-link">
-                <img style={{marginBottom: '-2px'}} alt="Instagram" height="6" src="https://github.com/beelaineo/pb-signatures/blob/main/assets/insta.png?raw=true" />
+                {instagramIcon}
                 <a style={{color: '#000', textDecoration: 'unset', paddingLeft: 2}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
               </div>
             </div>
           </td>
           <td style={{verticalAlign: 'top'}}>
-            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', paddingLeft: 10, paddingTop: 4}}>
-              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb Production LA</span><br />
+            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', paddingLeft: 8, paddingTop: 0}}>
+              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LA</span><br />
               <span>12030</span> <span>Viewcrest</span> <span>Road</span><br />
               <span>Studio</span> <span>City,</span> <span>CA</span> <span>91604</span><br />
               Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+13235405700`}>+1 323 540 5700</a><br /><br />
@@ -78,8 +81,8 @@ const Signature = ({ signature }) => {
             </div>
           </td>
           <td style={{verticalAlign: 'top'}}>
-            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', paddingLeft: 10, paddingTop: 4}}>
-              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb Production LDN</span><br />
+            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', paddingLeft: 8, paddingTop: 0}}>
+              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LDN</span><br />
               <span>15</span> <span>Poland</span> <span>St</span><br />
               <span>London,</span> <span>WIF 8QE</span><br />
               Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+442079936051`}>+44 20 7993 6051</a>
@@ -88,13 +91,14 @@ const Signature = ({ signature }) => {
         </tr>
       </tbody>
     </table>
-    </div>
   </div>
   <CopyToClipboard
+    style={{ alignSelf: 'start', margin: '10px 0 50px 0'}}
     text={clipboardText}
     options={{ asHtml: true }}
-    onCopy={(text, result) => {
-      console.log(`on copied: ${result}`, text)
+    onCopy={(result) => {
+      console.log(`on copied: ${result}`)
+      setCopied(true)
     }}
   >
     <button
