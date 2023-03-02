@@ -57,7 +57,7 @@ const Signature = ({ signature }) => {
             </div>
           </td>
           <td style={{verticalAlign: 'top'}}>
-            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '0.5px solid #000', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
+            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '1px solid #000', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
               <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb NYC</span><br />
               <span>360</span> <span>W</span> <span>34</span> <span>St</span> <span>Suite 8R</span><br />
               <span>New</span> <span>York,</span> <span>NY</span> <span>10001</span><br />
