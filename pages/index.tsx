@@ -5,7 +5,7 @@ import CopyToClipboard from 'react-copy-html-to-clipboard'
 const { useRef, useState } = React
 
 const instagramIcon = (
-  <img height="6px" width="6px" style={{lineHeight: 0, marginBottom: -1}} src="https://pb-signatures.vercel.app/insta.png" />
+  <img height="6px" width="6px" style={{lineHeight: 0, marginBottom: -2}} src="https://pb-signatures.vercel.app/insta.png" />
 )
 
 const Signature = ({ signature }) => {
@@ -65,7 +65,7 @@ const Signature = ({ signature }) => {
               {signature.insta && signature.insta_link && (<br />)}
               <div style={{marginBottom: '5px'}} className="insta-link">
                 {instagramIcon}
-                <a style={{color: '#000', textDecoration: 'unset', paddingLeft: 2}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
+                <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset', paddingLeft: 2}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
               </div>
             </div>
           </td>
@@ -76,8 +76,8 @@ const Signature = ({ signature }) => {
               <span>Studio</span> <span>City,</span> <span>CA</span> <span>91604</span><br />
               Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+13235405700`}>+1 323 540 5700</a><br /><br />
               {signature.insta && signature.insta_link && (<br />)}
-              <span style={{fontWeight: 600}}>Invoicing</span><br />
-              <a style={{color: '#000', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com" target="_blank">invoices@photobombproduction.com</a>
+              <br />
+              <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com?subject=Invoicing" rel="noopener noreferrer" target="_blank">Click to Invoice</a>
             </div>
           </td>
           <td style={{verticalAlign: 'top'}}>
