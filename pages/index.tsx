@@ -10,8 +10,11 @@ const instagramIcon = (
 
 const Signature = ({ signature }) => {
   const [clipboardText, setClipboardText] = useState('')
+  const [clipboardTextMobile, setClipboardTextMobile] = useState('')
   const [copied, setCopied] = useState(false)
+  const [copiedMobile, setCopiedMobile] = useState(false)
   const signatureHTML = useRef<HTMLDivElement>(null)
+  const signatureMobile = useRef<HTMLDivElement>(null)
 
   const renderEmailSignature = (html) => {
     return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -30,8 +33,15 @@ const Signature = ({ signature }) => {
     setCopied(true)
   }
 
+  const updateTextMobile = () => {
+    console.log('Mobile Clipboard:', signatureMobile.current?.outerHTML)
+    setClipboardTextMobile(signatureMobile.current?.outerHTML)
+    setCopiedMobile(true)
+  }
+
   return (
   <>
+  <h4>Desktop: Gmail and Apple Mail Signature (formatted HTML)</h4>
   <div ref={signatureHTML} style={{ padding: 0, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
@@ -93,7 +103,7 @@ const Signature = ({ signature }) => {
     </table>
   </div>
   <CopyToClipboard
-    style={{ alignSelf: 'start', margin: '10px 0 50px 0'}}
+    style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
     text={clipboardText}
     options={{ asHtml: true }}
     onCopy={(result) => {
@@ -106,6 +116,62 @@ const Signature = ({ signature }) => {
       onMouseDown={updateText}
     >
       {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
+    </button>
+  </CopyToClipboard>
+  <h4>Mobile: Apple iOS Mail Signature (plain text)</h4>
+  <div ref={signatureMobile} style={{ padding: 0, fontSize: 10, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
+  <span style={{ fontWeight: 600, fontSize: 11}}>{signature.name}</span><br /><br />
+  <span>{signature.role}</span><br />
+  {signature.phone && (
+    <><span>{signature.phone_label} <a style={{ color: '#000', textDecoration: 'unset' }} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span></>
+  )}
+  {signature.insta && signature.insta_link && (
+    <>
+      <br />
+      <span><a style={{color: '#000', textDecoration: 'unset'}} href={signature.insta_link} target="_blank">IG: @{signature.insta}</a></span>
+      </>
+  )}
+      <br />
+      <a style={{color: '#000', lineHeight: '8px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
+      <br />
+      <br />
+      <a style={{color: '#000', textDecoration: 'unset'}} href="https://instagram.com/photobombproduction" target="_blank">IG: @photobombproduction</a>
+      <br />
+      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com?subject=Invoicing" rel="noopener noreferrer" target="_blank">Click to Invoice</a>
+      <br />
+      <br />
+      <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb NYC</span>
+      <br />
+      <span style={{fontSize: 8}}>360 W 34 St Suite 8R</span><br />
+      <span style={{fontSize: 8}}>New York, NY 10001</span><br />
+      <span style={{fontSize: 8}}>Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+16464775559`}>+1 646 477 5559</a></span>
+      <br />
+      <br />
+      <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LA</span><br />
+      <span style={{fontSize: 8}}>12030 Viewcrest Road</span><br />
+      <span style={{fontSize: 8}}>Studio City, CA 91604</span><br />
+      <span style={{fontSize: 8}}>Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+13235405700`}>+1 323 540 5700</a></span>
+      <br />
+      <br />
+      <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LDN</span><br />
+      <span style={{fontSize: 8}}>15 Poland St</span><br />
+      <span style={{fontSize: 8}}>London, WIF 8QE</span><br />
+      <span style={{fontSize: 8}}>Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+442079936051`}>+44 20 7993 6051</a></span>
+  </div>
+  <CopyToClipboard
+    style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
+    text={clipboardTextMobile}
+    options={{ asHtml: true }}
+    onCopy={(result) => {
+      console.log(`on copied: ${result}`)
+      setCopiedMobile(true)
+    }}
+  >
+    <button
+      style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '0 auto', maxWidth: '320px' }}
+      onMouseDown={updateTextMobile}
+    >
+      {!copiedMobile ? 'Copy above signature to clipboard' : 'Copied!'}
     </button>
   </CopyToClipboard>
   </>
