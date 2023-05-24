@@ -1,14 +1,17 @@
 import * as React from 'react'
 //useSWR allows the use of SWR inside function components
 import useSWR from 'swr'
+import sanityClient from '@sanity/client'
 import CopyToClipboard from 'react-copy-html-to-clipboard'
+import groq from 'groq'
+
 const { useRef, useState } = React
 
 const instagramIcon = (
   <img height="6px" width="6px" style={{lineHeight: 0, marginBottom: -2}} src="https://pb-signatures.vercel.app/insta.png" />
 )
 
-const Signature = ({ signature }) => {
+const Signature = ({ signature, settings }) => {
   const [clipboardText, setClipboardText] = useState('')
   const [clipboardTextMobile, setClipboardTextMobile] = useState('')
   const [copied, setCopied] = useState(false)
@@ -39,9 +42,11 @@ const Signature = ({ signature }) => {
     setCopiedMobile(true)
   }
 
+  const offices = settings.locations
+
   return (
   <>
-  <h4>Desktop: Gmail and Apple Mail Signature (formatted HTML)</h4>
+  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Desktop: Gmail and Apple Mail Signature (formatted HTML)</h4>
   <div ref={signatureHTML} style={{ padding: 0, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
@@ -66,38 +71,31 @@ const Signature = ({ signature }) => {
               <a style={{color: '#000', lineHeight: '8px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
             </div>
           </td>
-          <td style={{verticalAlign: 'top'}}>
-            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '1px solid #000', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
-              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb NYC</span><br />
-              <span>360</span> <span>W</span> <span>34</span> <span>St</span> <span>Suite 8R</span><br />
-              <span>New</span> <span>York,</span> <span>NY</span> <span>10001</span><br />
-              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+16464775559`}>+1 646 477 5559</a><br /><br /><br />
-              {signature.insta && signature.insta_link && (<br />)}
-              <div style={{marginBottom: '5px'}} className="insta-link">
-                {instagramIcon}
-                <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset', paddingLeft: 2}} href="https://instagram.com/photobombproduction" target="_blank">photobombproduction</a>
+          {offices.map((office, i) => {
+            return (
+              <td style={{verticalAlign: 'top'}}>
+              <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '1px solid #000', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
+                <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span><br />
+                <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p><br /><br />
+                {i == 0 && settings.insta && settings.insta_link && (
+                  <>
+                    <br />
+                    <div style={{marginBottom: '5px'}} className="insta-link">
+                      {instagramIcon}
+                      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset', paddingLeft: 2}} href={settings.insta_link} target="_blank">{settings.insta}</a>
+                    </div>
+                  </>
+                )}
+                {i == 1 && settings.invoice_label && settings.invoice_link && (
+                  <>
+                  <br />
+                  <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href={settings.invoice_link} rel="noopener noreferrer" target="_blank">{settings.invoice_label}</a>
+                  </>
+                )}
               </div>
-            </div>
-          </td>
-          <td style={{verticalAlign: 'top'}}>
-            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', paddingLeft: 8, paddingTop: 0}}>
-              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LA</span><br />
-              <span>12030</span> <span>Viewcrest</span> <span>Road</span><br />
-              <span>Studio</span> <span>City,</span> <span>CA</span> <span>91604</span><br />
-              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+13235405700`}>+1 323 540 5700</a><br /><br />
-              {signature.insta && signature.insta_link && (<br />)}
-              <br />
-              <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com?subject=Invoicing" rel="noopener noreferrer" target="_blank">Click to Invoice</a>
-            </div>
-          </td>
-          <td style={{verticalAlign: 'top'}}>
-            <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', paddingLeft: 8, paddingTop: 0}}>
-              <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LDN</span><br />
-              <span>15</span> <span>Poland</span> <span>St</span><br />
-              <span>London,</span> <span>WIF 8QE</span><br />
-              Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+442079936051`}>+44 20 7993 6051</a>
-            </div>
-          </td>
+            </td>
+            )
+          })}
         </tr>
       </tbody>
     </table>
@@ -118,7 +116,7 @@ const Signature = ({ signature }) => {
       {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
     </button>
   </CopyToClipboard>
-  <h4>Mobile: Apple iOS Mail Signature (plain text)</h4>
+  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem', paddingTop: '1rem'}}>Mobile: Apple iOS Mail Signature (plain text)</h4>
   <div ref={signatureMobile} style={{ padding: 0, fontSize: 10, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
   <span style={{ fontWeight: 600, fontSize: 11}}>{signature.name}</span><br /><br />
   <span>{signature.role}</span><br />
@@ -135,28 +133,24 @@ const Signature = ({ signature }) => {
       <a style={{color: '#000', lineHeight: '8px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
       <br />
       <br />
-      <a style={{color: '#000', textDecoration: 'unset'}} href="https://instagram.com/photobombproduction" target="_blank">IG: @photobombproduction</a>
+      <a style={{color: '#000', textDecoration: 'unset'}} href={settings.insta_link} target="_blank">{`IG: @${settings.insta}`}</a>
       <br />
-      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href="mailto:invoices@photobombproduction.com?subject=Invoicing" rel="noopener noreferrer" target="_blank">Click to Invoice</a>
-      <br />
-      <br />
-      <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb NYC</span>
-      <br />
-      <span style={{fontSize: 8}}>360 W 34 St Suite 8R</span><br />
-      <span style={{fontSize: 8}}>New York, NY 10001</span><br />
-      <span style={{fontSize: 8}}>Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+16464775559`}>+1 646 477 5559</a></span>
+      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href={settings.invoice_link} rel="noopener noreferrer" target="_blank">{settings.invoice_label}</a>
       <br />
       <br />
-      <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LA</span><br />
-      <span style={{fontSize: 8}}>12030 Viewcrest Road</span><br />
-      <span style={{fontSize: 8}}>Studio City, CA 91604</span><br />
-      <span style={{fontSize: 8}}>Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+13235405700`}>+1 323 540 5700</a></span>
-      <br />
-      <br />
-      <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>Photobomb LDN</span><br />
-      <span style={{fontSize: 8}}>15 Poland St</span><br />
-      <span style={{fontSize: 8}}>London, WIF 8QE</span><br />
-      <span style={{fontSize: 8}}>Office: <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:+442079936051`}>+44 20 7993 6051</a></span>
+      {offices.map((office, i) => {
+        return (
+          <>
+            <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span>
+            <br />
+            <p style={{whiteSpace: 'pre', fontSize: 8, margin: 0}}>{office.address}</p>
+            {i < (offices.length - 1) && (
+            <>
+              <br />
+            </>)}
+          </>
+        )
+      })}
   </div>
   <CopyToClipboard
     style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
@@ -174,6 +168,7 @@ const Signature = ({ signature }) => {
       {!copiedMobile ? 'Copy above signature to clipboard' : 'Copied!'}
     </button>
   </CopyToClipboard>
+  <hr />
   </>
   )
 }
@@ -181,18 +176,31 @@ const Signature = ({ signature }) => {
 //Write a fetcher function to wrap the native fetch function and return the result of a call to url in json format
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
+const client = sanityClient({
+  projectId: "k9f4bb0p",
+  dataset: "production",
+  useCdn: true
+})
+
 export default function Index() {
   //Set up SWR to run the fetcher function when calling "/api/staticdata"
   //There are 3 possible states: (1) loading when data is null (2) ready when the data is returned (3) error when there was an error fetching the data
-  const { data, error } = useSWR('/api/staticdata', fetcher)
+  const { data, error } = useSWR(groq`{"signatures": *[_type == "person"], "settings": *[_type == "settings"][0]{..., locations[]->}}`, query =>
+    client.fetch(query)
+  )
 
   //Handle the error state
   if (error) return <div>Failed to load</div>
   //Handle the loading state
   if (!data) return <div>Loading...</div>
+
+  console.log(data)
   //Handle the ready state and display the result contained in the data object mapped to the structure of the json file
-  const signatures = JSON.parse(data).entries
+  const signatures = data.signatures
+  const settings = data.settings
+
   console.log(signatures)
+
   return (
     <>
     <div className="hello">
@@ -211,8 +219,10 @@ export default function Index() {
       }
     `}</style>
     </div>
-    <div style={{ flexDirection: 'column', display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-      {signatures.map((signature) => <Signature signature={signature} key={signature.id} />)}
+    <div>
+    </div>
+    <div style={{ flexDirection: 'column', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', padding: '2rem' }}>
+      {signatures.map((signature) => <Signature signature={signature} settings={settings} key={signature._id} />)}
     </div>
     </>
   )

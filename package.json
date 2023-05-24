@@ -6,6 +6,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@sanity/client": "^6.1.2",
+    "groq": "^3.11.2",
     "next": "latest",
     "react": "^18.2.0",
     "react-copy-html-to-clipboard": "^6.0.4",
