@@ -73,7 +73,7 @@ const Signature = ({ signature, settings }) => {
           </td>
           {offices.map((office, i) => {
             return (
-              <td style={{verticalAlign: 'top'}}>
+              <td style={{verticalAlign: 'top'}} key={i}>
               <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '1px solid #000', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
                 <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span><br />
                 <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p><br /><br />
@@ -140,7 +140,7 @@ const Signature = ({ signature, settings }) => {
       <br />
       {offices.map((office, i) => {
         return (
-          <>
+          <div key={i}>
             <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span>
             <br />
             <p style={{whiteSpace: 'pre', fontSize: 8, margin: 0}}>{office.address}</p>
@@ -148,7 +148,7 @@ const Signature = ({ signature, settings }) => {
             <>
               <br />
             </>)}
-          </>
+          </div>
         )
       })}
   </div>
