@@ -179,7 +179,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json())
 const client = sanityClient({
   projectId: "k9f4bb0p",
   dataset: "production",
-  useCdn: true
+  useCdn: false
 })
 
 export default function Index() {
