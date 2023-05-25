@@ -74,7 +74,7 @@ const Signature = ({ signature, settings }) => {
           {offices.map((office, i) => {
             return (
               <td style={{verticalAlign: 'top'}} key={i}>
-              <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: '1px solid #000', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
+              <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: i == 0 ? '1px solid #000' : 'none', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
                 <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span><br />
                 <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p><br /><br />
                 {i == 0 && settings.insta && settings.insta_link && (
