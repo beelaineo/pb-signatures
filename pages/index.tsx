@@ -51,9 +51,9 @@ const Signature = ({ signature, settings }) => {
     <table cellPadding={0} cellSpacing={0}>
       <tbody>
         <tr>
-          <td style={{verticalAlign: 'top', fontSize: '7px', lineHeight: '8px', paddingTop: 0}}>
-            <span style={{fontWeight: 600, fontSize: '8px', lineHeight: '7px'}}>{signature.name}</span><br /><br /><br /><br />
-            <div className='meta' style={{fontWeight: 400, fontSize: '7px', lineHeight: '8px'}}>
+          <td style={{verticalAlign: 'top', fontSize: '8px', lineHeight: '9px', paddingTop: 0}}>
+            <span style={{fontWeight: 600, fontSize: '9px', lineHeight: '9px'}}>{signature.name}</span><br /><br /><br /><br />
+            <div className='meta' style={{fontWeight: 400, fontSize: '8px', lineHeight: '9px'}}>
               <span>{signature.role}</span>
               {signature.phone && (
               <>
@@ -68,13 +68,13 @@ const Signature = ({ signature, settings }) => {
                 </>
               )}
               <br />
-              <a style={{color: '#000', lineHeight: '8px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
+              <a style={{color: '#000', lineHeight: '9px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
             </div>
           </td>
           {offices.map((office, i) => {
             return (
               <td style={{verticalAlign: 'top'}} key={i}>
-              <div style={{fontWeight: 300, fontSize: '6px', lineHeight: '8px', borderLeft: i == 0 ? '1px solid #000' : 'none', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
+              <div style={{fontWeight: 300, fontSize: '7px', lineHeight: '9px', borderLeft: i == 0 ? '1px solid #000' : 'none', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
                 <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span><br />
                 <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p><br /><br />
                 {i == 0 && settings.insta && settings.insta_link && (
@@ -130,7 +130,7 @@ const Signature = ({ signature, settings }) => {
       </>
   )}
       <br />
-      <a style={{color: '#000', lineHeight: '8px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
+      <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
       <br />
       <br />
       <a style={{color: '#000', textDecoration: 'unset'}} href={settings.insta_link} target="_blank">{`IG: @${settings.insta}`}</a>
@@ -141,9 +141,9 @@ const Signature = ({ signature, settings }) => {
       {offices.map((office, i) => {
         return (
           <div key={i}>
-            <span style={{fontSize: 8, fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span>
+            <span style={{fontSize: '9px', fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span>
             <br />
-            <p style={{whiteSpace: 'pre', fontSize: 8, margin: 0}}>{office.address}</p>
+            <p style={{whiteSpace: 'pre', fontSize: '8px', margin: 0}}>{office.address}</p>
             {i < (offices.length - 1) && (
             <>
               <br />
