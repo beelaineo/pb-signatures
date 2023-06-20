@@ -52,7 +52,7 @@ const Signature = ({ signature, settings }) => {
       <tbody>
         <tr>
           <td style={{verticalAlign: 'top', fontSize: '8px', lineHeight: '9px', paddingTop: 0}}>
-            <span style={{fontWeight: 600, fontSize: '9px', lineHeight: '9px'}}>{signature.name}</span><br /><br /><br /><br />
+            <span style={{fontWeight: 600, fontSize: '9px', lineHeight: '9px'}}>{signature.name}</span><br /><br /><br /><br />{!signature.insta && <br />}
             <div className='meta' style={{fontWeight: 400, fontSize: '8px', lineHeight: '9px'}}>
               <span>{signature.role}</span>
               {signature.phone && (
