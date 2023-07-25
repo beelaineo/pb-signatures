@@ -64,7 +64,7 @@ const Signature = ({ signature, settings }) => {
               {signature.insta && signature.insta_link && (
                 <>
                   <br />
-                  <span><a style={{color: '#000', textDecoration: 'unset'}} href={signature.insta_link} target="_blank">{instagramIcon} {signature.insta}</a></span>
+                  <span><a style={{color: '#000', textDecoration: 'unset'}} href={signature.insta_link} target="_blank">@{signature.insta}</a></span>
                 </>
               )}
               <br />
@@ -81,8 +81,7 @@ const Signature = ({ signature, settings }) => {
                   <>
                     <br />
                     <div style={{marginBottom: '5px'}} className="insta-link">
-                      {instagramIcon}
-                      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset', paddingLeft: 2}} href={settings.insta_link} target="_blank">{settings.insta}</a>
+                      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset', paddingLeft: 2}} href={settings.insta_link} target="_blank">@{settings.insta}</a>
                     </div>
                   </>
                 )}
