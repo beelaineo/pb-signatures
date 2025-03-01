@@ -31,6 +31,20 @@ const Signature = ({ signature, settings }) => {
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="x-apple-disable-message-reformatting">
     <title></title>
+    <!--[if mso]>
+    <style>
+      table {border-collapse:collapse;border-spacing:0;border:none;margin:0;}
+      div, td {padding:0;}
+      div {margin:0 !important;}
+    </style>
+    <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+    </noscript>
+    <![endif]-->
     <style>
       /* Reset styles for email clients */
       body, table, td, p, a, li, blockquote {
@@ -43,6 +57,13 @@ const Signature = ({ signature, settings }) => {
       }
       img {
         -ms-interpolation-mode: bicubic;
+      }
+      /* Outlook-specific vertical alignment fix */
+      table.vertical-align {
+        height: 100%;
+      }
+      .vertical-align td {
+        vertical-align: middle;
       }
     </style>
     </head>
@@ -66,12 +87,12 @@ const Signature = ({ signature, settings }) => {
 
   return (
   <>
-  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Desktop: Gmail and Apple Mail Signature (formatted HTML)</h4>
+  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Gmail and Apple Mail Signature (formatted HTML)</h4>
   <div ref={signatureHTML} style={{ padding: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
-    <table cellPadding={0} cellSpacing={0} border={0} style={{minHeight: '180px', verticalAlign: 'middle', borderCollapse: 'collapse'}}>
+    <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{minHeight: '180px', borderCollapse: 'collapse', height: '100%'}}>
       <tbody>
         <tr>
-          <td style={{fontSize: '10px', lineHeight: '13px', paddingTop: 0, paddingRight: '8px', verticalAlign: 'top'}}>
+          <td valign="middle" style={{fontSize: '10px', lineHeight: '13px', paddingTop: 0, paddingRight: '8px', verticalAlign: 'middle'}}>
             <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '14px', lineHeight: '18px'}}>{signature.name}</span><br /><br />
             <div style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px'}}>
               <span>{signature.role}</span>
@@ -96,15 +117,21 @@ const Signature = ({ signature, settings }) => {
             <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '10px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
           </td>
           <td style={{width: '2px', backgroundColor: '#000000', padding: '0'}}>&nbsp;</td>
-          <td style={{marginLeft: '8px', paddingLeft: '8px', verticalAlign: 'top'}}>
-            {offices.map((office, i) => {
-              return (
-                <div key={i} style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px', paddingTop: i > 0 ? '10px' : 0}}>
-                  <span style={{fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span><br />
-                  <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p>
-                </div>
-              )
-            })}
+          <td valign="middle" style={{marginLeft: '8px', paddingLeft: '8px', verticalAlign: 'middle'}}>
+            <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
+              <tbody>
+                {offices.map((office, i) => {
+                  return (
+                    <tr key={i}>
+                      <td valign="middle" style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px', paddingTop: i > 0 ? '10px' : 0, verticalAlign: 'middle'}}>
+                        <span style={{fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span><br />
+                        <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </td>
         </tr>
       </tbody>
@@ -126,12 +153,12 @@ const Signature = ({ signature, settings }) => {
       {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
     </button>
   </CopyToClipboard>
-  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem', paddingTop: '1rem'}}>Mobile: Apple iOS Mail Signature (plain text)</h4>
+  {/* <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem', paddingTop: '1rem'}}>Mobile: Apple iOS Mail Signature (plain text)</h4>
   <div ref={signatureMobile} style={{ padding: 0, fontSize: 10, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
-    <table cellPadding={0} cellSpacing={0} border={0} style={{borderCollapse: 'collapse'}}>
+    <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
       <tbody>
         <tr>
-          <td style={{padding: 0}}>
+          <td valign="middle" style={{padding: 0, verticalAlign: 'middle'}}>
             <img width={150} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block', paddingBottom: '10px'}} />
             <br />
             <span style={{ fontWeight: 600, fontSize: 11}}>{signature.name}</span><br /><br />
@@ -188,7 +215,7 @@ const Signature = ({ signature, settings }) => {
       {!copiedMobile ? 'Copy above signature to clipboard' : 'Copied!'}
     </button>
   </CopyToClipboard>
-  <hr />
+  <hr /> */}
   </>
   )
 }
