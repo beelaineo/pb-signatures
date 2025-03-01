@@ -7,9 +7,13 @@ import groq from 'groq'
 
 const { useRef, useState } = React
 
-const instagramIcon = (
-  <img height="6px" width="6px" style={{lineHeight: 0, marginBottom: -2}} src="https://pb-signatures.vercel.app/insta.png" />
+const logoImage = (
+  <img height="50px" alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" />
 )
+
+// const instagramIcon = (
+//   <img height="6px" width="6px" style={{lineHeight: 0, marginBottom: -2}} src="https://pb-signatures.vercel.app/insta.png" alt="Instagram Icon" />
+// )
 
 const Signature = ({ signature, settings }) => {
   const [clipboardText, setClipboardText] = useState('')
@@ -21,13 +25,29 @@ const Signature = ({ signature, settings }) => {
 
   const renderEmailSignature = (html) => {
     return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-    <html><head>
+    <html>
+    <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="x-apple-disable-message-reformatting">
     <title></title>
+    <style>
+      /* Reset styles for email clients */
+      body, table, td, p, a, li, blockquote {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      table, td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      img {
+        -ms-interpolation-mode: bicubic;
+      }
+    </style>
     </head>
-    <body id="body" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">${html}</body></html>`
+    <body style="margin:0; padding:0; background-color:#ffffff;">${html}</body>
+    </html>`
   }
 
   const updateText = () => {
@@ -38,7 +58,7 @@ const Signature = ({ signature, settings }) => {
 
   const updateTextMobile = () => {
     console.log('Mobile Clipboard:', signatureMobile.current?.outerHTML)
-    setClipboardTextMobile(signatureMobile.current?.outerHTML)
+    setClipboardTextMobile(renderEmailSignature(signatureMobile.current?.outerHTML))
     setCopiedMobile(true)
   }
 
@@ -47,54 +67,45 @@ const Signature = ({ signature, settings }) => {
   return (
   <>
   <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Desktop: Gmail and Apple Mail Signature (formatted HTML)</h4>
-  <div ref={signatureHTML} style={{ padding: 0, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
-    <table cellPadding={0} cellSpacing={0}>
+  <div ref={signatureHTML} style={{ padding: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+    <table cellPadding={0} cellSpacing={0} border={0} style={{minHeight: '180px', verticalAlign: 'middle', borderCollapse: 'collapse'}}>
       <tbody>
         <tr>
-          <td style={{verticalAlign: 'top', fontSize: '8px', lineHeight: '9px', paddingTop: 0}}>
-            <span style={{fontWeight: 600, fontSize: '9px', lineHeight: '9px'}}>{signature.name}</span><br /><br /><br /><br />{!signature.insta && <br />}
-            <div className='meta' style={{fontWeight: 400, fontSize: '8px', lineHeight: '9px'}}>
+          <td style={{fontSize: '10px', lineHeight: '13px', paddingTop: 0, paddingRight: '8px', verticalAlign: 'top'}}>
+            <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '14px', lineHeight: '18px'}}>{signature.name}</span><br /><br />
+            <div style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px'}}>
               <span>{signature.role}</span>
               {signature.phone && (
               <>
                 <br />
-                <span>{signature.phone_label} <a style={{color: '#000', textDecoration: 'unset'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
+                <span><a style={{color: '#000', textDecoration: 'none'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
               </>
               )}
-              {signature.insta && signature.insta_link && (
-                <>
-                  <br />
-                  <span><a style={{color: '#000', textDecoration: 'unset'}} href={signature.insta_link} target="_blank">@{signature.insta}</a></span>
-                </>
-              )}
               <br />
-              <a style={{color: '#000', lineHeight: '9px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
             </div>
-          </td>
-          {offices.map((office, i) => {
-            return (
-              <td style={{verticalAlign: 'top'}} key={i}>
-              <div style={{fontWeight: 300, fontSize: '7px', lineHeight: '9px', borderLeft: i == 0 ? '1px solid #000' : 'none', marginLeft: 8, paddingLeft: 8, paddingTop: 0}}>
-                <span style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span><br />
-                <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p><br /><br />
-                {i == 0 && settings.insta && settings.insta_link && (
-                  <>
-                    <br />
-                    <div style={{marginBottom: '5px'}} className="insta-link">
-                      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset', paddingLeft: 2}} href={settings.insta_link} target="_blank">@{settings.insta}</a>
-                    </div>
-                  </>
-                )}
-                {i == 1 && settings.invoice_label && settings.invoice_link && (
-                  <>
-                  <br />
-                  <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href={settings.invoice_link} rel="noopener noreferrer" target="_blank">{settings.invoice_label}</a>
-                  </>
-                )}
+            <br />
+            <img width={150} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block'}} />
+            <br />
+            {settings.insta && settings.insta_link && (
+              <>
+              <div>
+                <a style={{color: '#000', textDecoration: 'none', fontSize: '10px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">@{settings.insta}</a>
               </div>
-            </td>
-            )
-          })}
+              </>
+            )}
+            <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '10px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
+          </td>
+          <td style={{width: '2px', backgroundColor: '#000000', padding: '0'}}>&nbsp;</td>
+          <td style={{marginLeft: '8px', paddingLeft: '8px', verticalAlign: 'top'}}>
+            {offices.map((office, i) => {
+              return (
+                <div key={i} style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px', paddingTop: i > 0 ? '10px' : 0}}>
+                  <span style={{fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span><br />
+                  <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p>
+                </div>
+              )
+            })}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -117,39 +128,49 @@ const Signature = ({ signature, settings }) => {
   </CopyToClipboard>
   <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem', paddingTop: '1rem'}}>Mobile: Apple iOS Mail Signature (plain text)</h4>
   <div ref={signatureMobile} style={{ padding: 0, fontSize: 10, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
-  <span style={{ fontWeight: 600, fontSize: 11}}>{signature.name}</span><br /><br />
-  <span>{signature.role}</span><br />
-  {signature.phone && (
-    <><span>{signature.phone_label} <a style={{ color: '#000', textDecoration: 'unset' }} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span></>
-  )}
-  {signature.insta && signature.insta_link && (
-    <>
-      <br />
-      <span><a style={{color: '#000', textDecoration: 'unset'}} href={signature.insta_link} target="_blank">IG: @{signature.insta}</a></span>
-      </>
-  )}
-      <br />
-      <a style={{color: '#000', lineHeight: '10px', textDecoration: 'unset'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
-      <br />
-      <br />
-      <a style={{color: '#000', textDecoration: 'unset'}} href={settings.insta_link} target="_blank">{`IG: @${settings.insta}`}</a>
-      <br />
-      <a style={{fontWeight: 600, color: '#000', textDecoration: 'unset'}} href={settings.invoice_link} rel="noopener noreferrer" target="_blank">{settings.invoice_label}</a>
-      <br />
-      <br />
-      {offices.map((office, i) => {
-        return (
-          <div key={i}>
-            <span style={{fontSize: '9px', fontWeight: 600, color: '#000', textDecoration: 'unset'}}>{office.name}</span>
+    <table cellPadding={0} cellSpacing={0} border={0} style={{borderCollapse: 'collapse'}}>
+      <tbody>
+        <tr>
+          <td style={{padding: 0}}>
+            <img width={150} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block', paddingBottom: '10px'}} />
             <br />
-            <p style={{whiteSpace: 'pre', fontSize: '8px', margin: 0}}>{office.address}</p>
-            {i < (offices.length - 1) && (
-            <>
-              <br />
-            </>)}
-          </div>
-        )
-      })}
+            <span style={{ fontWeight: 600, fontSize: 11}}>{signature.name}</span><br /><br />
+            <span>{signature.role}</span><br />
+            {signature.phone && (
+              <><span>{signature.phone_label} <a style={{ color: '#000', textDecoration: 'none' }} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span></>
+            )}
+            {signature.insta && signature.insta_link && (
+              <>
+                <br />
+                <span><a style={{color: '#000', textDecoration: 'none'}} href={signature.insta_link} target="_blank">IG: @{signature.insta}</a></span>
+              </>
+            )}
+            <br />
+            <a style={{color: '#000', lineHeight: '10px', textDecoration: 'none'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
+            <br />
+            <br />
+            <a style={{color: '#000', textDecoration: 'none'}} href={settings.insta_link} target="_blank">{`IG: @${settings.insta}`}</a>
+            <br />
+            <a style={{fontWeight: 600, color: '#000', textDecoration: 'none'}} href={settings.invoice_link} rel="noopener noreferrer" target="_blank">{settings.invoice_label}</a>
+            <br />
+            <br />
+            {offices.map((office, i) => {
+              return (
+                <div key={i}>
+                  <span style={{fontSize: '9px', fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span>
+                  <br />
+                  <p style={{whiteSpace: 'pre', fontSize: '8px', margin: 0}}>{office.address}</p>
+                  {i < (offices.length - 1) && (
+                  <>
+                    <br />
+                  </>)}
+                </div>
+              )
+            })}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <CopyToClipboard
     style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
@@ -203,7 +224,10 @@ export default function Index() {
   return (
     <>
     <div className="hello">
-      <h1>Photobomb Email Signatures</h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+        {logoImage}
+        <h1>Photobomb Email Signatures</h1>
+      </div>
 
       <style jsx>{`
       .hello {
