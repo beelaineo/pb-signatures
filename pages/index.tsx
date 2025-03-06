@@ -221,30 +221,30 @@ const Signature = ({ signature, settings }) => {
     <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{minHeight: '120px', borderCollapse: 'collapse', height: '100%'}}>
       <tbody>
         <tr>
-          <td valign="middle" style={{fontSize: '10px', lineHeight: '13px', paddingTop: 0, paddingRight: '8px', verticalAlign: 'middle'}}>
-            <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '14px', lineHeight: '18px'}}>{signature.name}</span><br /><br />
-            <div style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px'}}>
-              <span>{signature.role}</span>
+          <td valign="middle" style={{fontSize: '11px', lineHeight: '13px', paddingTop: 0, paddingRight: '12px', verticalAlign: 'middle'}}>
+            <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '16px', lineHeight: '18px'}}>{signature.name}</span><br /><br />
+            <div style={{fontWeight: 400, fontSize: '11px', lineHeight: '13px'}}>
+              <span style={{fontSize: '11px', lineHeight: '13px', display: 'inline-block'}}>{signature.role}</span>
               {signature.phone && (
               <>
                 <br />
-                <span><a style={{color: '#000', textDecoration: 'none'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
+                <a style={{color: '#000', textDecoration: 'none', fontSize: '11px', lineHeight: '13px'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a>
               </>
               )}
               <br />
             </div>
             <br />
-            <img width={120} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block'}} />
+            <img width={170} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block'}} />
           </td>
-          <td style={{width: '2px', backgroundColor: '#000000', padding: '0'}}>&nbsp;</td>
-          <td valign="middle" style={{marginLeft: '8px', paddingLeft: '8px', verticalAlign: 'middle'}}>
+          <td style={{width: '2px', backgroundColor: '#000000', padding: '0', margin: '0 2px'}}></td>
+          <td valign="middle" style={{marginLeft: '8px', paddingLeft: '12px', verticalAlign: 'middle'}}>
             <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
               <tbody>
                 <td>
                 {offices.map((office, i) => {
                   return (
                     <tr key={i}>
-                      <td valign="middle" style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px', paddingBottom: '10px'}}>
+                      <td valign="middle" style={{fontWeight: 400, fontSize: '12px', lineHeight: '13px', paddingBottom: '10px'}}>
                         <span style={{fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span><br />
                       </td>
                     </tr>
@@ -252,12 +252,14 @@ const Signature = ({ signature, settings }) => {
                 })}
             {settings.insta && settings.insta_link && (
               <>
+              <br />
               <div>
-                <a style={{color: '#000', textDecoration: 'none', fontSize: '10px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">@{settings.insta}</a>
+                <a style={{color: '#000', textDecoration: 'none', fontSize: '11px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">{`@${settings.insta}`}</a>
+                <br />
+                <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '11px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
               </div>
               </>
             )}
-             <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '10px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
                 </td>
               </tbody>
             </table>
