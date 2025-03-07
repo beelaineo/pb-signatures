@@ -222,7 +222,7 @@ const Signature = ({ signature, settings }) => {
       <tbody>
         <tr>
           <td valign="middle" style={{fontSize: '11px', lineHeight: '13px', paddingTop: 0, paddingRight: '12px', verticalAlign: 'middle'}}>
-            <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '16px', lineHeight: '18px'}}>{signature.name}</span><br /><br />
+            <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '16px', lineHeight: '18px'}}>{signature.name}</span><br />
             <div style={{fontWeight: 400, fontSize: '11px', lineHeight: '13px'}}>
               <span style={{fontSize: '11px', lineHeight: '13px', display: 'inline-block'}}>{signature.role}</span>
               {signature.phone && (
@@ -233,8 +233,7 @@ const Signature = ({ signature, settings }) => {
               )}
               <br />
             </div>
-            <br />
-            <img width={170} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block'}} />
+            <img width={170} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block', paddingTop: '8px'}} />
           </td>
           <td style={{width: '2px', backgroundColor: '#000000', padding: '0', margin: '0 2px'}}></td>
           <td valign="middle" style={{marginLeft: '8px', paddingLeft: '12px', verticalAlign: 'middle'}}>
@@ -244,7 +243,7 @@ const Signature = ({ signature, settings }) => {
                 {offices.map((office, i) => {
                   return (
                     <tr key={i}>
-                      <td valign="middle" style={{fontWeight: 400, fontSize: '12px', lineHeight: '13px', paddingBottom: '10px'}}>
+                      <td valign="middle" style={{fontWeight: 400, fontSize: '12px', lineHeight: '13px', paddingBottom: '8px'}}>
                         <span style={{fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span><br />
                       </td>
                     </tr>
@@ -252,7 +251,6 @@ const Signature = ({ signature, settings }) => {
                 })}
             {settings.insta && settings.insta_link && (
               <>
-              <br />
               <div>
                 <a style={{color: '#000', textDecoration: 'none', fontSize: '11px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">{`@${settings.insta}`}</a>
                 <br />
