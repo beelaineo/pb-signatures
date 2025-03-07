@@ -78,7 +78,7 @@ const Signature = ({ signature, settings }) => {
   }
 
   const updateTextMobile = () => {
-    console.log('Mobile Clipboard:', signatureMobile.current?.outerHTML)
+    console.log(renderEmailSignature(signatureHTML.current?.outerHTML))
     setClipboardTextMobile(renderEmailSignature(signatureMobile.current?.outerHTML))
     setCopiedMobile(true)
   }
@@ -268,18 +268,18 @@ const Signature = ({ signature, settings }) => {
   </div>
   <CopyToClipboard
     style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
-    text={clipboardText}
+    text={clipboardTextMobile}
     options={{ asHtml: true }}
     onCopy={(result) => {
       console.log(`on copied: ${result}`)
-      setCopied(true)
+      setCopiedMobile(true)
     }}
   >
     <button
       style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '0 auto', maxWidth: '320px' }}
-      onMouseDown={updateText}
+      onMouseDown={updateTextMobile}
     >
-      {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
+      {!copiedMobile ? 'Copy above signature to clipboard' : 'Copied!'}
     </button>
   </CopyToClipboard>
   </>
