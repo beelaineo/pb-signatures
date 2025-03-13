@@ -2,10 +2,9 @@ import * as React from 'react'
 //useSWR allows the use of SWR inside function components
 import useSWR from 'swr'
 import sanityClient from '@sanity/client'
-import CopyToClipboard from 'react-copy-html-to-clipboard'
 import groq from 'groq'
 
-const { useRef, useState } = React
+const { useRef, useState, useEffect } = React
 
 const logoImage = (
   <img height="50px" alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" />
@@ -20,8 +19,11 @@ const Signature = ({ signature, settings }) => {
   const [clipboardTextMobile, setClipboardTextMobile] = useState('')
   const [copied, setCopied] = useState(false)
   const [copiedMobile, setCopiedMobile] = useState(false)
+  const [showManualCopy, setShowManualCopy] = useState(false)
+  const [showManualCopyMobile, setShowManualCopyMobile] = useState(false)
   const signatureHTML = useRef<HTMLDivElement>(null)
   const signatureMobile = useRef<HTMLDivElement>(null)
+  const manualCopyTextarea = useRef<HTMLTextAreaElement>(null)
 
   const renderEmailSignature = (html) => {
     return `<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -71,26 +73,184 @@ const Signature = ({ signature, settings }) => {
     </html>`
   }
 
-  const updateText = () => {
-    console.log(renderEmailSignature(signatureHTML.current?.outerHTML))
-    setClipboardText(renderEmailSignature(signatureHTML.current?.outerHTML))
-    setCopied(true)
-  }
+  // Cross-browser clipboard copy function with HTML support
+  const copyToClipboard = async (html: string): Promise<boolean> => {
+    try {
+      // Modern approach: Use the Clipboard API if available
+      if (navigator.clipboard && window.ClipboardItem && window.isSecureContext) {
+        try {
+          const type = 'text/html';
+          const blob = new Blob([html], { type });
+          const data = [new ClipboardItem({ [type]: blob })];
+          await navigator.clipboard.write(data);
+          return true;
+        } catch (err) {
+          console.error('Clipboard API HTML write failed:', err);
+          // Fall back to text-only clipboard API
+          try {
+            await navigator.clipboard.writeText(html);
+            return true;
+          } catch (textErr) {
+            console.error('Clipboard API text write failed:', textErr);
+          }
+        }
+      }
 
-  const updateTextMobile = () => {
-    if (signatureMobile.current) {
-      // Get the HTML content
-      const mobileHTML = signatureMobile.current.outerHTML
-      // Generate the email signature HTML
-      const emailHTML = renderEmailSignature(mobileHTML)
-      // Log for debugging
-      console.log('Setting mobile clipboard text with HTML length:', emailHTML.length)
-      // Update state with the full HTML content
-      setClipboardTextMobile(emailHTML)
-    } else {
-      console.error('Mobile signature ref is not available')
+      // Fallback for browsers without Clipboard API
+      // Create a temporary div to hold the HTML content
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      tempDiv.setAttribute('contenteditable', 'true');
+      tempDiv.style.position = 'fixed';
+      tempDiv.style.left = '-9999px';
+      tempDiv.style.top = '0';
+      document.body.appendChild(tempDiv);
+      
+      // Select the content
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(tempDiv);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      
+      // Execute copy command
+      const successful = document.execCommand('copy');
+      
+      // Clean up
+      selection?.removeAllRanges();
+      document.body.removeChild(tempDiv);
+      
+      return successful;
+    } catch (err) {
+      console.error('Primary clipboard methods failed:', err);
+      
+      // Try IE-specific approach
+      try {
+        // For Internet Explorer
+        if ((window as any).clipboardData && (window as any).clipboardData.setData) {
+          // IE specific code path to prevent textarea being shown while dialog is visible
+          (window as any).clipboardData.setData('Text', html);
+          return true;
+        }
+      } catch (ieErr) {
+        console.error('IE clipboard method failed:', ieErr);
+      }
+      
+      // Last resort fallback - use textarea for plain text
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = html;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return successful;
+      } catch (finalErr) {
+        console.error('Final clipboard fallback failed:', finalErr);
+        return false;
+      }
+    }
+  };
+
+  // Special method for Safari and iOS
+  const copyHtmlViaSafariMethod = (html: string): boolean => {
+    try {
+      // Create an iframe (works better in Safari)
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'absolute';
+      iframe.style.top = '-9999px';
+      document.body.appendChild(iframe);
+      
+      // Write the HTML content to the iframe document
+      const doc = iframe.contentDocument;
+      doc?.open();
+      doc?.write(html);
+      doc?.close();
+      
+      // Create a range and select the contents
+      const range = doc?.createRange();
+      range?.selectNodeContents(doc?.body as Node);
+      
+      // Get the selection from the iframe window
+      const selection = iframe.contentWindow?.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range as Range);
+      
+      // Execute copy command in the iframe's window context
+      const successful = document.execCommand('copy');
+      
+      // Clean up
+      document.body.removeChild(iframe);
+      
+      return successful;
+    } catch (err) {
+      console.error('Safari iframe method failed:', err);
+      return false;
+    }
+  };
+
+  const updateText = async () => {
+    if (signatureHTML.current) {
+      const emailHTML = renderEmailSignature(signatureHTML.current.outerHTML);
+      setClipboardText(emailHTML);
+      
+      // Try multiple methods in sequence until one succeeds
+      let success = await copyToClipboard(emailHTML);
+      
+      // If the main method fails, try the Safari-specific method
+      if (!success) {
+        success = copyHtmlViaSafariMethod(emailHTML);
+      }
+      
+      setCopied(success);
+      
+      // If all methods fail, show manual copy option
+      if (!success) {
+        setShowManualCopy(true);
+      } else {
+        setShowManualCopy(false);
+        // Reset the copied state after 3 seconds
+        setTimeout(() => setCopied(false), 3000);
+      }
     }
   }
+
+  const updateTextMobile = async () => {
+    if (signatureMobile.current) {
+      const mobileHTML = signatureMobile.current.outerHTML;
+      const emailHTML = renderEmailSignature(mobileHTML);
+      console.log('Setting mobile clipboard text with HTML length:', emailHTML.length);
+      setClipboardTextMobile(emailHTML);
+      
+      // Try multiple methods in sequence until one succeeds
+      let success = await copyToClipboard(emailHTML);
+      
+      // If the main method fails, try the Safari-specific method
+      if (!success) {
+        success = copyHtmlViaSafariMethod(emailHTML);
+      }
+      
+      setCopiedMobile(success);
+      
+      // If all methods fail, show manual copy option
+      if (!success) {
+        setShowManualCopyMobile(true);
+      } else {
+        setShowManualCopyMobile(false);
+        // Reset the copied state after 3 seconds
+        setTimeout(() => setCopiedMobile(false), 3000);
+      }
+    } else {
+      console.error('Mobile signature ref is not available');
+    }
+  }
+
+  useEffect(() => {
+    console.log('clipboardText', clipboardText)
+    console.log('clipboardTextMobile', clipboardTextMobile)
+  }, [clipboardText, clipboardTextMobile])
 
   const offices = settings.locations
 
@@ -146,22 +306,28 @@ const Signature = ({ signature, settings }) => {
       </tbody>
     </table>
   </div>
-  <CopyToClipboard
-    style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
-    text={clipboardText}
-    options={{ asHtml: true }}
-    onCopy={(result) => {
-      console.log(`on copied: ${result}`)
-      setCopied(true)
-    }}
+  <button
+    style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '10px 0', maxWidth: '320px' }}
+    onClick={updateText}
   >
-    <button
-      style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '0 auto', maxWidth: '320px' }}
-      onMouseDown={updateText}
-    >
-      {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
-    </button>
-  </CopyToClipboard>
+    {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
+  </button>
+  
+  {showManualCopy && (
+    <div style={{marginTop: '10px', padding: '10px', border: '1px solid #ccc', backgroundColor: '#f8f8f8'}}>
+      <p style={{fontSize: '12px', margin: '0 0 10px 0'}}>
+        Automatic copy failed. Please manually select all text in the box below and copy (Ctrl+C or Cmd+C):
+      </p>
+      <textarea
+        ref={manualCopyTextarea}
+        onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+        style={{width: '100%', height: '100px', padding: '5px'}}
+        value={clipboardText}
+        readOnly
+      />
+    </div>
+  )}
+  
   {/* <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem', paddingTop: '1rem'}}>Mobile: Apple iOS Mail Signature (plain text)</h4>
   <div ref={signatureMobile} style={{ padding: 0, fontSize: 10, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
     <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
@@ -272,24 +438,26 @@ const Signature = ({ signature, settings }) => {
       </tbody>
     </table>
   </div>
-  <CopyToClipboard
-    style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
-    text={clipboardTextMobile}
-    options={{ asHtml: true }}
-    onCopy={(result) => {
-      console.log(`Simplified signature copied: ${result}`)
-      setCopiedMobile(true)
-      // Reset the copied state after 3 seconds
-      setTimeout(() => setCopiedMobile(false), 3000)
-    }}
+  <button
+    style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '10px 0', maxWidth: '320px' }}
+    onClick={updateTextMobile}
   >
-    <button
-      style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '0 auto', maxWidth: '320px' }}
-      onClick={updateTextMobile}
-    >
-      {!copiedMobile ? 'Copy simplified signature to clipboard' : 'Copied!'}
-    </button>
-  </CopyToClipboard>
+    {!copiedMobile ? 'Copy simplified signature to clipboard' : 'Copied!'}
+  </button>
+  
+  {showManualCopyMobile && (
+    <div style={{marginTop: '10px', padding: '10px', border: '1px solid #ccc', backgroundColor: '#f8f8f8'}}>
+      <p style={{fontSize: '12px', margin: '0 0 10px 0'}}>
+        Automatic copy failed. Please manually select all text in the box below and copy (Ctrl+C or Cmd+C):
+      </p>
+      <textarea
+        onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+        style={{width: '100%', height: '100px', padding: '5px'}}
+        value={clipboardTextMobile}
+        readOnly
+      />
+    </div>
+  )}
   </>
   )
 }
