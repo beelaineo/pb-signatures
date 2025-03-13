@@ -78,9 +78,18 @@ const Signature = ({ signature, settings }) => {
   }
 
   const updateTextMobile = () => {
-    console.log(renderEmailSignature(signatureHTML.current?.outerHTML))
-    setClipboardTextMobile(renderEmailSignature(signatureMobile.current?.outerHTML))
-    setCopiedMobile(true)
+    if (signatureMobile.current) {
+      // Get the HTML content
+      const mobileHTML = signatureMobile.current.outerHTML
+      // Generate the email signature HTML
+      const emailHTML = renderEmailSignature(mobileHTML)
+      // Log for debugging
+      console.log('Setting mobile clipboard text with HTML length:', emailHTML.length)
+      // Update state with the full HTML content
+      setClipboardTextMobile(emailHTML)
+    } else {
+      console.error('Mobile signature ref is not available')
+    }
   }
 
   const offices = settings.locations
@@ -239,26 +248,23 @@ const Signature = ({ signature, settings }) => {
           <td valign="middle" style={{marginLeft: '8px', paddingLeft: '12px', verticalAlign: 'middle'}}>
             <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
               <tbody>
-                <td>
-                {offices.map((office, i) => {
-                  return (
-                    <tr key={i}>
-                      <td valign="middle" style={{fontWeight: 400, fontSize: '12px', lineHeight: '13px', paddingBottom: '8px'}}>
+                <tr>
+                  <td valign="middle" style={{fontWeight: 400, fontSize: '12px', lineHeight: '13px'}}>
+                    {offices.map((office, i) => (
+                      <div key={i} style={{paddingBottom: '8px'}}>
                         <span style={{fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span><br />
-                      </td>
-                    </tr>
-                  )
-                })}
-            {settings.insta && settings.insta_link && (
-              <>
-              <div>
-                <a style={{color: '#000', textDecoration: 'none', fontSize: '11px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">{`@${settings.insta}`}</a>
-                <br />
-                <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '11px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
-              </div>
-              </>
-            )}
-                </td>
+                      </div>
+                    ))}
+                    
+                    {settings.insta && settings.insta_link && (
+                      <div>
+                        <a style={{color: '#000', textDecoration: 'none', fontSize: '11px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">{`@${settings.insta}`}</a>
+                        <br />
+                        <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '11px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
+                      </div>
+                    )}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </td>
@@ -271,15 +277,17 @@ const Signature = ({ signature, settings }) => {
     text={clipboardTextMobile}
     options={{ asHtml: true }}
     onCopy={(result) => {
-      console.log(`on copied: ${result}`)
+      console.log(`Simplified signature copied: ${result}`)
       setCopiedMobile(true)
+      // Reset the copied state after 3 seconds
+      setTimeout(() => setCopiedMobile(false), 3000)
     }}
   >
     <button
       style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '0 auto', maxWidth: '320px' }}
-      onMouseDown={updateTextMobile}
+      onClick={updateTextMobile}
     >
-      {!copiedMobile ? 'Copy above signature to clipboard' : 'Copied!'}
+      {!copiedMobile ? 'Copy simplified signature to clipboard' : 'Copied!'}
     </button>
   </CopyToClipboard>
   </>
