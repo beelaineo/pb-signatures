@@ -423,7 +423,7 @@ const Signature = ({ signature, settings }) => {
                     ))}
                     
                     {settings.insta && settings.insta_link && (
-                      <div>
+                      <div style={{paddingTop: '8px'}}>
                         <a style={{color: '#000', textDecoration: 'none', fontSize: '11px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">{`@${settings.insta}`}</a>
                         <br />
                         <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '11px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
