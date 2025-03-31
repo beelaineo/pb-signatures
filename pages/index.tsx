@@ -69,7 +69,7 @@ const Signature = ({ signature, settings }) => {
       }
     </style>
     </head>
-    <body style="margin:0; padding:0; background-color:#ffffff;">${html}</body>
+    <body style="margin:0; padding:0;">${html}</body>
     </html>`
   }
 
@@ -257,7 +257,7 @@ const Signature = ({ signature, settings }) => {
   return (
   <>
   <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Simplified Signature (formatted HTML)</h4>
-  <div ref={signatureMobile} style={{ padding: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+  <div ref={signatureMobile} style={{ padding: 0, maxHeight: '140px', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
     <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{minHeight: '120px', maxHeight: '120px', borderCollapse: 'collapse', height: '100%'}}>
       <tbody>
         <tr>
