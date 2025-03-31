@@ -256,147 +256,12 @@ const Signature = ({ signature, settings }) => {
 
   return (
   <>
-  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Gmail and Apple Mail Signature (formatted HTML)</h4>
-  <div ref={signatureHTML} style={{ padding: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
-    <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{minHeight: '180px', borderCollapse: 'collapse', height: '100%'}}>
-      <tbody>
-        <tr>
-          <td valign="middle" style={{fontSize: '10px', lineHeight: '13px', paddingTop: 0, paddingRight: '8px', verticalAlign: 'middle'}}>
-            <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '14px', lineHeight: '18px'}}>{signature.name}</span><br /><br />
-            <div style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px'}}>
-              <span>{signature.role}</span>
-              {signature.phone && (
-              <>
-                <br />
-                <span><a style={{color: '#000', textDecoration: 'none'}} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span>
-              </>
-              )}
-              <br />
-            </div>
-            <br />
-            <img width={150} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block'}} />
-            <br />
-            {settings.insta && settings.insta_link && (
-              <>
-              <div>
-                <a style={{color: '#000', textDecoration: 'none', fontSize: '10px', lineHeight: '13px'}} href={settings.insta_link} target="_blank">@{settings.insta}</a>
-              </div>
-              </>
-            )}
-            <a style={{color: '#000', lineHeight: '13px', textDecoration: 'none', fontSize: '10px'}} href="https://www.photobombproduction.com/" target="_blank">www.photobombproduction.com</a>
-          </td>
-          <td style={{width: '2px', backgroundColor: '#000000', padding: '0'}}>&nbsp;</td>
-          <td valign="middle" style={{marginLeft: '8px', paddingLeft: '8px', verticalAlign: 'middle'}}>
-            <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
-              <tbody>
-                {offices.map((office, i) => {
-                  return (
-                    <tr key={i}>
-                      <td valign="middle" style={{fontWeight: 400, fontSize: '10px', lineHeight: '13px', paddingTop: i > 0 ? '10px' : 0, verticalAlign: 'middle'}}>
-                        <span style={{fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span><br />
-                        <p style={{whiteSpace: 'pre', margin: 0}}>{office.address}</p>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <button
-    style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '10px 0', maxWidth: '320px' }}
-    onClick={updateText}
-  >
-    {!copied ? 'Copy above signature to clipboard' : 'Copied!'}
-  </button>
-  
-  {showManualCopy && (
-    <div style={{marginTop: '10px', padding: '10px', border: '1px solid #ccc', backgroundColor: '#f8f8f8'}}>
-      <p style={{fontSize: '12px', margin: '0 0 10px 0'}}>
-        Automatic copy failed. Please manually select all text in the box below and copy (Ctrl+C or Cmd+C):
-      </p>
-      <textarea
-        ref={manualCopyTextarea}
-        onClick={(e) => (e.target as HTMLTextAreaElement).select()}
-        style={{width: '100%', height: '100px', padding: '5px'}}
-        value={clipboardText}
-        readOnly
-      />
-    </div>
-  )}
-  
-  {/* <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem', paddingTop: '1rem'}}>Mobile: Apple iOS Mail Signature (plain text)</h4>
-  <div ref={signatureMobile} style={{ padding: 0, fontSize: 10, fontFamily: '"Gill Sans", "Gill Sans MT", Helvetica, Arial, sans-serif' }}>
-    <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
-      <tbody>
-        <tr>
-          <td valign="middle" style={{padding: 0, verticalAlign: 'middle'}}>
-            <img width={150} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block', paddingBottom: '10px'}} />
-            <br />
-            <span style={{ fontWeight: 600, fontSize: 11}}>{signature.name}</span><br /><br />
-            <span>{signature.role}</span><br />
-            {signature.phone && (
-              <><span>{signature.phone_label} <a style={{ color: '#000', textDecoration: 'none' }} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a></span></>
-            )}
-            {signature.insta && signature.insta_link && (
-              <>
-                <br />
-                <span><a style={{color: '#000', textDecoration: 'none'}} href={signature.insta_link} target="_blank">IG: @{signature.insta}</a></span>
-              </>
-            )}
-            <br />
-            <a style={{color: '#000', lineHeight: '10px', textDecoration: 'none'}} href="https://www.photobombproduction.com/" target="_blank">photobombproduction.com</a>
-            <br />
-            <br />
-            <a style={{color: '#000', textDecoration: 'none'}} href={settings.insta_link} target="_blank">{`IG: @${settings.insta}`}</a>
-            <br />
-            <a style={{fontWeight: 600, color: '#000', textDecoration: 'none'}} href={settings.invoice_link} rel="noopener noreferrer" target="_blank">{settings.invoice_label}</a>
-            <br />
-            <br />
-            {offices.map((office, i) => {
-              return (
-                <div key={i}>
-                  <span style={{fontSize: '9px', fontWeight: 600, color: '#000', textDecoration: 'none'}}>{office.name}</span>
-                  <br />
-                  <p style={{whiteSpace: 'pre', fontSize: '8px', margin: 0}}>{office.address}</p>
-                  {i < (offices.length - 1) && (
-                  <>
-                    <br />
-                  </>)}
-                </div>
-              )
-            })}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <CopyToClipboard
-    style={{ alignSelf: 'start', margin: '10px 0 10px 0'}}
-    text={clipboardTextMobile}
-    options={{ asHtml: true }}
-    onCopy={(result) => {
-      console.log(`on copied: ${result}`)
-      setCopiedMobile(true)
-    }}
-  >
-    <button
-      style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '0 auto', maxWidth: '320px' }}
-      onMouseDown={updateTextMobile}
-    >
-      {!copiedMobile ? 'Copy above signature to clipboard' : 'Copied!'}
-    </button>
-  </CopyToClipboard>
-  <hr /> */}
   <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Simplified Signature (formatted HTML)</h4>
   <div ref={signatureMobile} style={{ padding: 0, fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
-    <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{minHeight: '120px', borderCollapse: 'collapse', height: '100%'}}>
+    <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{minHeight: '120px', maxHeight: '120px', borderCollapse: 'collapse', height: '100%'}}>
       <tbody>
         <tr>
-          <td valign="middle" style={{fontSize: '11px', lineHeight: '13px', paddingTop: 0, paddingRight: '12px', verticalAlign: 'middle'}}>
+          <td valign="middle" style={{fontSize: '11px', lineHeight: '13px', paddingTop: 0, marginRight: '8px', paddingRight: '12px', verticalAlign: 'middle'}}>
             <span style={{fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif', fontWeight: 700, fontSize: '16px', lineHeight: '18px'}}>{signature.name}</span><br />
             <div style={{fontWeight: 400, fontSize: '11px', lineHeight: '13px'}}>
               <span style={{fontSize: '11px', lineHeight: '13px', display: 'inline-block'}}>{signature.role}</span>
@@ -410,8 +275,7 @@ const Signature = ({ signature, settings }) => {
             </div>
             <img width={170} alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block', paddingTop: '8px'}} />
           </td>
-          <td style={{width: '2px', backgroundColor: '#000000', padding: '0', margin: '0 2px'}}></td>
-          <td valign="middle" style={{marginLeft: '8px', paddingLeft: '12px', verticalAlign: 'middle'}}>
+          <td valign="middle" style={{borderLeft: '2px solid #000', marginLeft: '8px', paddingLeft: '12px', verticalAlign: 'middle'}}>
             <table cellPadding={0} cellSpacing={0} border={0} className="vertical-align" style={{borderCollapse: 'collapse', height: '100%'}}>
               <tbody>
                 <tr>
