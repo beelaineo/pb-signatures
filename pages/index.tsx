@@ -15,14 +15,14 @@ const logoImage = (
 // )
 
 const Signature = ({ signature, settings }) => {
-  const [clipboardText, setClipboardText] = useState('')
-  const [clipboardTextMobile, setClipboardTextMobile] = useState('')
-  const [copied, setCopied] = useState(false)
-  const [copiedMobile, setCopiedMobile] = useState(false)
-  const [showManualCopy, setShowManualCopy] = useState(false)
-  const [showManualCopyMobile, setShowManualCopyMobile] = useState(false)
-  const signatureHTML = useRef<HTMLDivElement>(null)
-  const signatureMobile = useRef<HTMLDivElement>(null)
+  const [clipboardTextAlt, setClipboardTextAlt] = useState('')
+  const [clipboardTextDefault, setClipboardTextDefault] = useState('')
+  const [copiedAlt, setCopiedAlt] = useState(false)
+  const [copiedDefault, setCopiedDefault] = useState(false)
+  const [showManualCopyAlt, setShowManualCopyAlt] = useState(false)
+  const [showManualCopyDefault, setShowManualCopyDefault] = useState(false)
+  const signatureDefault = useRef<HTMLDivElement>(null)
+  const signatureAlt = useRef<HTMLDivElement>(null)
   const manualCopyTextarea = useRef<HTMLTextAreaElement>(null)
 
   const renderEmailSignature = (html) => {
@@ -223,10 +223,10 @@ const Signature = ({ signature, settings }) => {
     }
   };
 
-  const updateText = async () => {
-    if (signatureHTML.current) {
-      const emailHTML = renderEmailSignature(signatureHTML.current.outerHTML);
-      setClipboardText(emailHTML);
+  const updateTextAlt = async () => {
+    if (signatureAlt.current) {
+      const emailHTML = renderEmailSignature(signatureAlt.current.outerHTML);
+      setClipboardTextAlt(emailHTML);
       
       // Try multiple methods in sequence until one succeeds
       let success = await copyToClipboard(emailHTML);
@@ -236,25 +236,25 @@ const Signature = ({ signature, settings }) => {
         success = copyHtmlViaSafariMethod(emailHTML);
       }
       
-      setCopied(success);
+      setCopiedAlt(success);
       
       // If all methods fail, show manual copy option
       if (!success) {
-        setShowManualCopy(true);
+        setShowManualCopyAlt(true);
       } else {
-        setShowManualCopy(false);
+        setShowManualCopyAlt(false);
         // Reset the copied state after 3 seconds
-        setTimeout(() => setCopied(false), 3000);
+        setTimeout(() => setCopiedAlt(false), 3000);
       }
     }
   }
 
-  const updateTextMobile = async () => {
-    if (signatureMobile.current) {
-      const mobileHTML = signatureMobile.current.outerHTML;
+  const updateTextDefault = async () => {
+    if (signatureDefault.current) {
+      const mobileHTML = signatureDefault.current.outerHTML;
       const emailHTML = renderEmailSignature(mobileHTML);
       console.log('Setting mobile clipboard text with HTML length:', emailHTML.length);
-      setClipboardTextMobile(emailHTML);
+      setClipboardTextDefault(emailHTML);
       
       // Try multiple methods in sequence until one succeeds
       let success = await copyToClipboard(emailHTML);
@@ -264,32 +264,32 @@ const Signature = ({ signature, settings }) => {
         success = copyHtmlViaSafariMethod(emailHTML);
       }
       
-      setCopiedMobile(success);
+      setCopiedDefault(success);
       
       // If all methods fail, show manual copy option
       if (!success) {
-        setShowManualCopyMobile(true);
+        setShowManualCopyDefault(true);
       } else {
-        setShowManualCopyMobile(false);
+        setShowManualCopyDefault(false);
         // Reset the copied state after 3 seconds
-        setTimeout(() => setCopiedMobile(false), 3000);
+        setTimeout(() => setCopiedDefault(false), 3000);
       }
     } else {
-      console.error('Mobile signature ref is not available');
+      console.error('Default signature ref is not available');
     }
   }
 
   useEffect(() => {
-    console.log('clipboardText', clipboardText)
-    console.log('clipboardTextMobile', clipboardTextMobile)
-  }, [clipboardText, clipboardTextMobile])
+    console.log('clipboardTextAlt', clipboardTextAlt)
+    console.log('clipboardTextDefault', clipboardTextDefault)
+  }, [clipboardTextAlt, clipboardTextDefault])
 
   const offices = settings.locations
 
   return (
   <>
   <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Signature (formatted HTML)</h4>
-  <div ref={signatureMobile} style={{ padding: 0, maxWidth: '600px', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+  <div ref={signatureDefault} style={{ padding: 0, maxWidth: '600px', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
     <table cellPadding={0} cellSpacing={0} border={0} style={{width: 'auto', maxWidth: '600px', borderCollapse: 'collapse'}}>
       <tr>
         <td valign="top" style={{
@@ -396,12 +396,12 @@ const Signature = ({ signature, settings }) => {
   </div>
   <button
     className="copy-button"
-    onClick={updateTextMobile}
+    onClick={updateTextDefault}
   >
-    {!copiedMobile ? 'Copy simplified signature to clipboard' : 'Copied!'}
+    {!copiedDefault ? 'Copy simplified signature to clipboard' : 'Copied!'}
   </button>
   
-  {showManualCopyMobile && (
+  {showManualCopyDefault && (
     <div className="manual-copy">
       <p style={{fontSize: '12px', margin: '0 0 10px 0'}}>
         Automatic copy failed. Please manually select all text in the box below and copy (Ctrl+C or Cmd+C):
@@ -409,10 +409,151 @@ const Signature = ({ signature, settings }) => {
       <textarea
         className="manual-textarea"
         onClick={(e) => (e.target as HTMLTextAreaElement).select()}
-        value={clipboardTextMobile}
+        value={clipboardTextDefault}
         readOnly
       />
     </div>
+
+    
+  )}
+
+<h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Signature (with email domain note)</h4>
+  <div ref={signatureAlt} style={{ padding: 0, maxWidth: '600px', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+    <table cellPadding={0} cellSpacing={0} border={0} style={{width: 'auto', maxWidth: '600px', borderCollapse: 'collapse'}}>
+      <tr>
+        <td valign="top" style={{
+          fontSize: '11px',
+          lineHeight: '13px',
+          paddingTop: '0',
+          paddingRight: '12px',
+          verticalAlign: 'top',
+          maxWidth: '200px'
+        }}>
+          <table cellPadding={0} cellSpacing={0} border={0} style={{width: '100%'}}>
+            <tr>
+              <td style={{paddingBottom: '4px'}}>
+                <span style={{
+                  fontFamily: '"Lucida Sans", "Gill Sans", "Verdana", Arial, sans-serif',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  lineHeight: '18px',
+                  display: 'block'
+                }}>{signature.name}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style={{paddingBottom: '4px'}}>
+                <span style={{
+                  fontSize: '11px',
+                  lineHeight: '13px',
+                  display: 'block'
+                }}>{signature.role}</span>
+              </td>
+            </tr>
+            {signature.phone && (
+              <tr>
+                <td style={{paddingBottom: '4px'}}>
+                  <a style={{
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    fontSize: '11px',
+                    lineHeight: '13px',
+                    display: 'block'
+                  }} href={`tel:${signature.phone.replace(/\s/g, '')}`}>{signature.phone}</a>
+                </td>
+              </tr>
+            )}
+            <tr>
+              <td style={{paddingTop: '8px'}}>
+                <a href="" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="https://pb-signatures.vercel.app/logo.png" width="180" height="auto" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}} />
+                <img className="dark-img" src="https://pb-signatures.vercel.app/logo-dark-mode.png" width="180" height="auto" alt="Photobomb Production Logo" style={{width: '100%', maxWidth: '600px', height: 'auto', display: 'none'}} />
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td valign="top" style={{
+          paddingLeft: '12px',
+          verticalAlign: 'top',
+          maxWidth: '200px'
+        }} className="locations-column">
+          <table cellPadding={0} cellSpacing={0} border={0} style={{width: '100%'}}>
+            {offices.map((office, i) => (
+              <tr key={i}>
+                <td style={{paddingBottom: '8px'}}>
+                  <span style={{
+                    fontWeight: 600,
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    fontSize: '12px',
+                    lineHeight: '14px',
+                    display: 'block'
+                  }}>{office.name}</span>
+                </td>
+              </tr>
+            ))}
+            {settings.insta && settings.insta_link && (
+              <>
+                <tr>
+                  <td style={{paddingTop: '16px', paddingBottom: '4px'}}>
+                    <a style={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      fontSize: '11px',
+                      lineHeight: '13px',
+                      display: 'block'
+                    }} href={settings.insta_link} target="_blank" rel="noopener noreferrer">{`@${settings.insta}`}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a style={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      fontSize: '11px',
+                      lineHeight: '13px',
+                      display: 'block'
+                    }} href="https://www.photobombproduction.com/" target="_blank" rel="noopener noreferrer">www.photobombproduction.com</a>
+                  </td>
+                </tr>
+              </>
+            )}
+          </table>
+        </td>
+      </tr>
+    </table>
+    <p style={{
+      fontWeight: 400,
+      color: 'inherit',
+      textDecoration: 'none',
+      fontSize: '11px',
+      lineHeight: '13px',
+      display: 'block',
+      maxWidth: '380px',
+    }}><b>Please note:</b> Our email domain is changing to @photobombcollective.com. Our previous domain will still work during the transition.
+    </p>
+  </div>
+  <button
+    className="copy-button"
+    onClick={updateTextAlt}
+  >
+    {!copiedAlt ? 'Copy simplified signature to clipboard' : 'Copied!'}
+  </button>
+  
+  {showManualCopyAlt && (
+    <div className="manual-copy">
+      <p style={{fontSize: '12px', margin: '0 0 10px 0'}}>
+        Automatic copy failed. Please manually select all text in the box below and copy (Ctrl+C or Cmd+C):
+      </p>
+      <textarea
+        className="manual-textarea"
+        onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+        value={clipboardTextAlt}
+        readOnly
+      />
+    </div>
+
+    
   )}
   
   <style jsx>{`
