@@ -32,6 +32,8 @@ const Signature = ({ signature, settings }) => {
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="x-apple-disable-message-reformatting">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark only">
     <title></title>
     <!--[if mso]>
     <style>
@@ -47,7 +49,11 @@ const Signature = ({ signature, settings }) => {
     </xml>
     </noscript>
     <![endif]-->
-    <style>
+    <style type="text/css">
+     :root {
+        color-scheme: light dark;
+        supported-color-schemes: light dark;
+      }
       /* Reset styles for email clients */
       body, table, td, p, a, li, blockquote {
         -webkit-text-size-adjust: 100%;
@@ -60,12 +66,38 @@ const Signature = ({ signature, settings }) => {
       img {
         -ms-interpolation-mode: bicubic;
       }
+      .locations-column {
+        border-left: 2px solid #000;
+      }
       /* Outlook-specific vertical alignment fix */
       table.vertical-align {
         height: 100%;
       }
       .vertical-align td {
         vertical-align: middle;
+      }
+      .dark-img { display: none !important; }
+
+      @media (prefers-color-scheme: dark) {
+        .dark-img {
+          display: block !important;
+        }
+
+        .light-img {
+          display: none !important;
+        }
+
+        .locations-column {
+          border-left: 2px solid #fff;
+        }
+      }
+
+      [data-ogsc] .dark-img {
+        display: block !important;
+      }
+
+      [data-ogsc] .light-img {
+        display: none !important;
       }
     </style>
     </head>
@@ -256,7 +288,7 @@ const Signature = ({ signature, settings }) => {
 
   return (
   <>
-  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Simplified Signature (formatted HTML)</h4>
+  <h4 style={{fontSize: '13px', fontFamily: 'sans-serif', paddingBottom: '1rem'}}>Signature (formatted HTML)</h4>
   <div ref={signatureMobile} style={{ padding: 0, maxWidth: '600px', fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif' }}>
     <table cellPadding={0} cellSpacing={0} border={0} style={{width: 'auto', maxWidth: '600px', borderCollapse: 'collapse'}}>
       <tr>
@@ -293,7 +325,7 @@ const Signature = ({ signature, settings }) => {
               <tr>
                 <td style={{paddingBottom: '4px'}}>
                   <a style={{
-                    color: '#000',
+                    color: 'inherit',
                     textDecoration: 'none',
                     fontSize: '11px',
                     lineHeight: '13px',
@@ -304,24 +336,25 @@ const Signature = ({ signature, settings }) => {
             )}
             <tr>
               <td style={{paddingTop: '8px'}}>
-                <img width="160" height="auto" alt="Photobomb Production Logo" src="https://pb-signatures.vercel.app/logo.png" style={{display: 'block'}} />
+                <a href="" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="/logo.png" width="160" height="auto" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}} />
+                <img className="dark-img" src="/logo-dark-mode.png" width="160" height="auto" alt="Photobomb Production Logo" style={{width: '100%', maxWidth: '600px', height: 'auto', display: 'none'}} />
+                </a>
               </td>
             </tr>
           </table>
         </td>
         <td valign="top" style={{
-          borderLeft: '2px solid #000',
           paddingLeft: '12px',
           verticalAlign: 'top',
           maxWidth: '200px'
-        }}>
+        }} className="locations-column">
           <table cellPadding={0} cellSpacing={0} border={0} style={{width: '100%'}}>
             {offices.map((office, i) => (
               <tr key={i}>
                 <td style={{paddingBottom: '8px'}}>
                   <span style={{
                     fontWeight: 600,
-                    color: '#000',
+                    color: 'inherit',
                     textDecoration: 'none',
                     fontSize: '12px',
                     lineHeight: '14px',
@@ -335,7 +368,7 @@ const Signature = ({ signature, settings }) => {
                 <tr>
                   <td style={{paddingTop: '16px', paddingBottom: '4px'}}>
                     <a style={{
-                      color: '#000',
+                      color: 'inherit',
                       textDecoration: 'none',
                       fontSize: '11px',
                       lineHeight: '13px',
@@ -346,7 +379,7 @@ const Signature = ({ signature, settings }) => {
                 <tr>
                   <td>
                     <a style={{
-                      color: '#000',
+                      color: 'inherit',
                       textDecoration: 'none',
                       fontSize: '11px',
                       lineHeight: '13px',
@@ -362,25 +395,90 @@ const Signature = ({ signature, settings }) => {
     </table>
   </div>
   <button
-    style={{ cursor: 'pointer', fontSize: '10px', border: '1px solid black', padding: '10px', margin: '10px 0', maxWidth: '320px' }}
+    className="copy-button"
     onClick={updateTextMobile}
   >
     {!copiedMobile ? 'Copy simplified signature to clipboard' : 'Copied!'}
   </button>
   
   {showManualCopyMobile && (
-    <div style={{marginTop: '10px', padding: '10px', border: '1px solid #ccc', backgroundColor: '#f8f8f8'}}>
+    <div className="manual-copy">
       <p style={{fontSize: '12px', margin: '0 0 10px 0'}}>
         Automatic copy failed. Please manually select all text in the box below and copy (Ctrl+C or Cmd+C):
       </p>
       <textarea
+        className="manual-textarea"
         onClick={(e) => (e.target as HTMLTextAreaElement).select()}
-        style={{width: '100%', height: '100px', padding: '5px'}}
         value={clipboardTextMobile}
         readOnly
       />
     </div>
   )}
+  
+  <style jsx>{`
+    .copy-button {
+      cursor: pointer;
+      font-size: 10px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      padding: 10px;
+      margin: 10px 0;
+      max-width: 320px;
+      transition: all 100ms ease-in;
+    }
+    
+    .copy-button:hover {
+      background: #f5f5f5;
+    }
+    
+    .manual-copy {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f8f8f8;
+    }
+    
+    .manual-textarea {
+      width: 100%;
+      height: 100px;
+      padding: 5px;
+      background: #fff;
+      color: #000;
+      border: 1px solid #ccc;
+    }
+
+    .locations-column {
+      border-left: 2px solid #000;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .copy-button {
+        border: 1px solid #fff;
+        background: #222;
+        color: #fff;
+      }
+      
+      .copy-button:hover {
+        background: #333;
+      }
+      
+      .manual-copy {
+        border: 1px solid #555;
+        background-color: #222;
+      }
+      
+      .manual-textarea {
+        background: #333;
+        color: #fff;
+        border: 1px solid #555;
+      }
+
+      .locations-column {
+        border-left: 2px solid #fff;
+      }
+    }
+  `}</style>
   </>
   )
 }
@@ -420,8 +518,30 @@ export default function Index() {
         {logoImage}
         <h1>Photobomb Email Signatures</h1>
       </div>
-
-      <style jsx>{`
+    </div>
+    <div>
+    </div>
+    <div className="signatures-container" style={{ flexDirection: 'column', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', padding: '2rem' }}>
+      {signatures.map((signature) => <Signature signature={signature} settings={settings} key={signature._id} />)}
+    </div>
+    
+    <style jsx global>{`
+      body {
+        background: #fff;
+        color: #000;
+        margin: 0;
+        transition: background 100ms ease-in, color 100ms ease-in;
+      }
+      
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #111;
+          color: #fff;
+        }
+      }
+    `}</style>
+    
+    <style jsx>{`
       .hello {
         font-family: Helvetica, Arial, sans-serif;
         background: #eee;
@@ -432,13 +552,30 @@ export default function Index() {
       .hello:hover {
         background: #ccc;
       }
+      
+      @media (prefers-color-scheme: dark) {
+        .hello {
+          background: #222;
+          color: #fff;
+        }
+        .hello:hover {
+          background: #333;
+        }
+      }
+      
+      @media (prefers-color-scheme: dark) {
+        .signatures-container {
+          background: #111;
+          color: #fff;
+        }
+        .dark-img {
+          display: block !important;
+        }
+        .light-img {
+          display: none !important;
+        }
+      }
     `}</style>
-    </div>
-    <div>
-    </div>
-    <div style={{ flexDirection: 'column', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', padding: '2rem' }}>
-      {signatures.map((signature) => <Signature signature={signature} settings={settings} key={signature._id} />)}
-    </div>
     </>
   )
 }
