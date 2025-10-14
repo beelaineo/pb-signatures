@@ -336,8 +336,8 @@ const Signature = ({ signature, settings }) => {
             )}
             <tr>
               <td style={{paddingTop: '8px'}}>
-                <a href="" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="https://pb-signatures.vercel.app/logo.png" width="160" height="auto" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}} />
-                <img className="dark-img" src="https://pb-signatures.vercel.app/logo-dark-mode.png" width="160" height="auto" alt="Photobomb Production Logo" style={{width: '100%', maxWidth: '600px', height: 'auto', display: 'none'}} />
+                <a href="" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="https://pb-signatures.vercel.app/logo.png" width="180" height="auto" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}} />
+                <img className="dark-img" src="https://pb-signatures.vercel.app/logo-dark-mode.png" width="180" height="auto" alt="Photobomb Production Logo" style={{width: '100%', maxWidth: '600px', height: 'auto', display: 'none'}} />
                 </a>
               </td>
             </tr>
