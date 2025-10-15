@@ -300,7 +300,7 @@ const Signature = ({ signature, settings }) => {
           verticalAlign: 'top',
           maxWidth: '200px'
         }}>
-          <table cellPadding={0} cellSpacing={0} border={0} style={{width: '100%'}}>
+          <table cellPadding={0} cellSpacing={0} border={0} style={{minWidth: '180px'}}>
             <tr>
               <td style={{paddingBottom: '4px'}}>
                 <span style={{
@@ -336,8 +336,8 @@ const Signature = ({ signature, settings }) => {
             )}
             <tr>
               <td style={{paddingTop: '8px'}}>
-                <a href="" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="https://pb-signatures.vercel.app/logo.png" width="180" height="auto" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}} />
-                <img className="dark-img" src="https://pb-signatures.vercel.app/logo-dark-mode.png" width="180" height="auto" alt="Photobomb Production Logo" style={{width: '100%', maxWidth: '600px', height: 'auto', display: 'none'}} />
+                <a href="" style={{display: 'block', width: '180px', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="https://pb-signatures.vercel.app/logo.png" width="180" height="auto" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}} />
+                <img className="dark-img" src="https://pb-signatures.vercel.app/logo-dark-mode.png" width="180" height="auto" alt="Photobomb Production Logo" style={{width: '180px', maxWidth: '600px', height: 'auto', display: 'none'}} />
                 </a>
               </td>
             </tr>
@@ -366,7 +366,7 @@ const Signature = ({ signature, settings }) => {
             {settings.insta && settings.insta_link && (
               <>
                 <tr>
-                  <td style={{paddingTop: '16px', paddingBottom: '4px'}}>
+                  <td style={{paddingTop: '24px', paddingBottom: '4px'}}>
                     <a style={{
                       color: 'inherit',
                       textDecoration: 'none',
@@ -377,6 +377,17 @@ const Signature = ({ signature, settings }) => {
                   </td>
                 </tr>
                 <tr>
+                  <td style={{paddingBottom: '4px'}}>
+                    <a style={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      fontSize: '11px',
+                      lineHeight: '13px',
+                      display: 'block'
+                    }} href="https://www.instagram.com/photobombcollectivestudio" target="_blank" rel="noopener noreferrer">{`@photobombcollectivestudio`}</a>
+                  </td>
+                </tr>
+                <tr>
                   <td>
                     <a style={{
                       color: 'inherit',
@@ -384,7 +395,7 @@ const Signature = ({ signature, settings }) => {
                       fontSize: '11px',
                       lineHeight: '13px',
                       display: 'block'
-                    }} href="https://www.photobombproduction.com/" target="_blank" rel="noopener noreferrer">www.photobombproduction.com</a>
+                    }} href="https://www.photobombcollective.com" target="_blank" rel="noopener noreferrer">www.photobombcollective.com</a>
                   </td>
                 </tr>
               </>
@@ -429,7 +440,7 @@ const Signature = ({ signature, settings }) => {
           verticalAlign: 'top',
           maxWidth: '200px'
         }}>
-          <table cellPadding={0} cellSpacing={0} border={0} style={{width: '100%'}}>
+          <table cellPadding={0} cellSpacing={0} border={0} style={{minWidth: '180px'}}>
             <tr>
               <td style={{paddingBottom: '4px'}}>
                 <span style={{
@@ -465,8 +476,8 @@ const Signature = ({ signature, settings }) => {
             )}
             <tr>
               <td style={{paddingTop: '8px'}}>
-                <a href="" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="https://pb-signatures.vercel.app/logo.png" width="180" height="auto" style={{display: 'block', width: '100%', maxWidth: '600px', height: 'auto'}} />
-                <img className="dark-img" src="https://pb-signatures.vercel.app/logo-dark-mode.png" width="180" height="auto" alt="Photobomb Production Logo" style={{width: '100%', maxWidth: '600px', height: 'auto', display: 'none'}} />
+                <a href="" style={{display: 'block', width: '180px', maxWidth: '600px', height: 'auto'}}><img alt="Photobomb Production Logo" className="light-img" src="https://pb-signatures.vercel.app/logo.png" width="180" height="auto" style={{display: 'block', width: '180px', maxWidth: '600px', height: 'auto'}} />
+                <img className="dark-img" src="https://pb-signatures.vercel.app/logo-dark-mode.png" width="180" height="auto" alt="Photobomb Production Logo" style={{width: '180px', maxWidth: '600px', height: 'auto', display: 'none'}} />
                 </a>
               </td>
             </tr>
@@ -495,7 +506,7 @@ const Signature = ({ signature, settings }) => {
             {settings.insta && settings.insta_link && (
               <>
                 <tr>
-                  <td style={{paddingTop: '16px', paddingBottom: '4px'}}>
+                  <td style={{paddingTop: '24px', paddingBottom: '4px'}}>
                     <a style={{
                       color: 'inherit',
                       textDecoration: 'none',
@@ -506,6 +517,17 @@ const Signature = ({ signature, settings }) => {
                   </td>
                 </tr>
                 <tr>
+                  <td style={{paddingBottom: '4px'}}>
+                    <a style={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      fontSize: '11px',
+                      lineHeight: '13px',
+                      display: 'block'
+                    }} href="https://www.instagram.com/photobombcollectivestudio" target="_blank" rel="noopener noreferrer">{`@photobombcollectivestudio`}</a>
+                  </td>
+                </tr>
+                <tr>
                   <td>
                     <a style={{
                       color: 'inherit',
@@ -513,7 +535,7 @@ const Signature = ({ signature, settings }) => {
                       fontSize: '11px',
                       lineHeight: '13px',
                       display: 'block'
-                    }} href="https://www.photobombproduction.com/" target="_blank" rel="noopener noreferrer">www.photobombproduction.com</a>
+                    }} href="https://www.photobombcollective.com" target="_blank" rel="noopener noreferrer">www.photobombcollective.com</a>
                   </td>
                 </tr>
               </>
