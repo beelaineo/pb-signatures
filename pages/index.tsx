@@ -552,7 +552,7 @@ const Signature = ({ signature, settings }) => {
       lineHeight: '13px',
       display: 'block',
       maxWidth: '380px',
-    }}><b>Please note:</b> Our email domain is changing to @photobombcollective.com. Our previous domain will still work during the transition.
+    }}><b>Please note:</b> Our email domain is changing to @photobombcollective.com. Our previous email addresses will still work during this transition.   
     </p>
   </div>
   <button
